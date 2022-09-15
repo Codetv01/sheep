@@ -45,7 +45,7 @@
         }
 
         .audio {
-            width: 70px;
+            width: 100px;
             height: 28px;
             top: 3px !important;
             left: 3px;
@@ -53,6 +53,7 @@
             background-color: white;
             border: none;
             font-weight: 800;
+            font-size: 16px;
         }
 
         @keyframes fade {
@@ -224,12 +225,22 @@
             });
         });
 
+        let markNum = 1;
+
         advertising.addEventListener('click', () => {
-            alert("allGoods.forEach(item => item.click());\n在控制台输入代码后直接游戏胜利");
+            if(confirm("点击确定后随机消除一个种类")) {
+                const mark = document.querySelectorAll(`[mark="${markNum}"]`);
+                mark.forEach(item => item.click());
+                markNum++;
+            }
         });
 
+        let audioThrottling = false;
 
         function createdAudio(src) {
+            if (audioThrottling) return;
+            audioThrottling = true;
+            setTimeout(() => audioThrottling = false, 200);
             let audio = document.createElement('audio');
             document.body.appendChild(audio);
             audio.autoplay = true;
