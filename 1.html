@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/PC.css" class="equipment">
+    <title>羊了个羊</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="box"></div>
+
+    <script>
+        const box = document.querySelector('.box');
+        const body = document.body;
+        let allGoods = document.querySelectorAll('.goods');
+        let boxGoodsLeft = 0;
+        let boxVolume = 0;
+        let spacing = 65;
+
+        const goodsList = [{
+            mark: 1,
+            BP: 'left top'
+        }, {
+            mark: 2,
+            BP: 'left center'
+        }, {
+            mark: 3,
+            BP: 'left bottom'
+        }, {
+            mark: 4,
+            BP: 'right top'
+        }, {
+            mark: 5,
+            BP: 'right center'
+        }, {
+            mark: 6,
+            BP: 'right bottom'
+        }, {
+            mark: 7,
+            BP: 'center top'
+        }, {
+            mark: 8,
+            BP: 'center center'
+        }, {
+            mark: 9,
+            BP: 'center bottom'
+        }]
+
+        function randomNum(min, max) {
+            min = Math.ceil(min);
+            max = Math.floor(max);
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        // 如果是移动端，则更换css文件，并调整goods间隙
+        if(/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
+            const equipment = document.querySelector('.equipment');
+            equipment.setAttribute('href', 'css/mobile.css');
+            spacing = 48;
+        }
+
+        function createGoods(oneGoods) {
+            const goods = document.createElement('div');
+            goods.classList.add('goods');
+            goods.style.backgroundPosition = oneGoods.BP;
+            goods.setAttribute('mark', oneGoods.mark)
+            goods.style.top = randomNum(0, window.innerHeight - 200) + 'px';
+            goods.style.left = randomNum(0, window.innerWidth - 60) + 'px';
+            body.appendChild(goods);
+            goods.setAttribute('onclick', 'goodsClick(this)');
+        }
+
+        function goodsClick(self) {
+            const newGoods = self.cloneNode();
+            newGoods.style.top = 0;
+            newGoods.style.left = boxGoodsLeft + 'px';
+            boxGoodsLeft += spacing;
+            box.appendChild(newGoods);
+            boxVolume++;
+            self.remove();
+            let count = 0;
+            let children = [...box.children];
+            children.forEach(item => item.getAttribute('mark') == newGoods.getAttribute('mark') && count++);
+            if (count >= 3) {
+                children.forEach(item => item.getAttribute('mark') == newGoods.getAttribute('mark') && item.remove());
+                boxVolume -= 3;
+                children = [...box.children];
+                children.forEach((item, index) => item.style.left = index * spacing + 'px');
+                boxGoodsLeft = spacing * children.length
+            }
+            boxVolume >= 7 && alert('你输了');
+            allGoods = document.querySelectorAll('.goods');
+            allGoods.length == 0 && alert('你胜利了');
+        }
+
+        for (let i = 0; i < 20; i++) {
+            const num = randomNum(0, goodsList.length - 1);
+            for (let i = 0; i < 3; i++) {
+                createGoods(goodsList[num]);
+            }
+        }
+
+    </script>
+</body>
+
+</html>

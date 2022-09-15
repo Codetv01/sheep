@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/PC.css" class="equipment">
+    <title>羊了个羊简易版</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .operation {
+            width: 80px;
+			height: 40px;
+			position: fixed;
+			background-color: #FFA042;
+			border-radius: 3px;
+			border: 1px solid #FFA042;
+            color: #531c01;
+			border: none;
+			padding: 3px;
+			bottom: 90px;
+        }
+
+        .disorganize {
+            left: 30px;
+        }
+
+        .selectLevel {
+			left: 150px;
+		}
+
+        .advertising {
+			left: 270px;
+        }
+
+        .audio {
+            width: 50px;
+			height: 28px;
+            top: 3px !important;
+            left: 3px;
+        }
+    </style>
+</head>
+
+<body>
+    <button class="audio operation">音乐</button>
+    <button class="disorganize operation">随机打乱</button>
+    <button class="advertising operation">看广告</button>
+
+    <select class="selectLevel operation">
+		<option value="6">第一关</option>
+		<option value="12">第二关</option>
+		<option value="20">第三关</option>
+		<option value="30">第四关</option>
+		<option value="40">第五关</option>
+		<option value="50">第六关</option>
+		<option value="60">第七关</option>
+		<option value="70">第八关</option>
+		<option value="85">第九关</option>
+		<option value="100">第十关</option>
+	</select>
+
+    <div class="box"></div>
+
+    <audio muted autoplay src="audio/失败.mp3"></audio>
+    <audio muted autoplay src="audio/胜利2.mp3"></audio>
+    <audio autoplay loop src="audio/背景音乐.mp3" class="BGAudio"></audio>
+
+    <script>
+        const box = document.querySelector('.box');
+        const body = document.body;
+        let allGoods = document.querySelectorAll('.goods');
+        let boxGoodsLeft = 0;
+        let boxVolume = 0;
+        let spacing = 65;
+        const selectLevel = document.querySelector('.selectLevel');
+        const disorganize = document.querySelector('.disorganize');
+        const advertising = document.querySelector('.advertising');
+        const BGAudio = document.querySelector('.BGAudio');
+        const audio = document.querySelector('.audio');
+
+        const goodsList = [{
+            mark: 1,
+            BP: 'zoon1'
+        }, {
+            mark: 2,
+            BP: 'zoon2'
+        }, {
+            mark: 3,
+            BP: 'zoon3'
+        }, {
+            mark: 4,
+            BP: 'zoon4'
+        }, {
+            mark: 5,
+            BP: 'zoon5'
+        }, {
+            mark: 6,
+            BP: 'zoon6'
+        }, {
+            mark: 7,
+            BP: 'zoon7'
+        }, {
+            mark: 8,
+            BP: 'zoon8'
+        }, {
+            mark: 9,
+            BP: 'zoon9'
+        }]
+
+        function randomNum(min, max) {
+            min = Math.ceil(min);
+            max = Math.floor(max);
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        // 如果是移动端，则更换css文件，并调整goods间隙
+        if(/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
+            const equipment = document.querySelector('.equipment');
+            equipment.setAttribute('href', 'css/mobile.css');
+            spacing = 48;
+        }
+
+        function createGoods(oneGoods) {
+            const goods = document.createElement('div');
+            goods.classList.add('goods');
+            goods.style.backgroundImage = `url(imgs/${oneGoods.BP}.png)`;
+            goods.setAttribute('mark', oneGoods.mark)
+            goods.style.top = randomNum(50, window.innerHeight - 222) + 'px';
+            goods.style.left = randomNum(20, window.innerWidth - 70) + 'px';
+            body.appendChild(goods);
+            goods.setAttribute('onclick', 'goodsClick(this)');
+        }
+
+        function goodsClick(self) {
+            if(boxVolume >= 7) return;
+            createdAudio('audio/点击.mp3');
+            const newGoods = self.cloneNode();
+            newGoods.style.top = 0;
+            newGoods.style.left = boxGoodsLeft + 'px';
+            newGoods.removeAttribute('onclick');
+            boxGoodsLeft += spacing;
+            box.appendChild(newGoods);
+            boxVolume++;
+            self.remove();
+            let count = 0;
+            let children = [...box.children];
+            children.forEach(item => item.getAttribute('mark') == newGoods.getAttribute('mark') && count++);
+            if (count >= 3) {
+                createdAudio('audio/得分.mp3');
+                children.forEach(item => item.getAttribute('mark') == newGoods.getAttribute('mark') && item.remove());
+                boxVolume -= 3;
+                children = [...box.children];
+                children.forEach((item, index) => item.style.left = index * spacing + 'px');
+                boxGoodsLeft = spacing * children.length
+            }
+            boxVolume >= 7 && gameFinish('很遗憾你输了', 'audio/失败.mp3');
+            allGoods = document.querySelectorAll('.goods');
+            allGoods.length <= 0 && gameFinish('恭喜你胜利了', 'audio/胜利2.mp3');
+        }
+
+        function gameFinish(str, audio) {
+            createdAudio(audio);
+            setTimeout(() => alert(str), 200);
+        }
+
+        function gameStart(number) {
+            boxVolume = 0;
+            boxGoodsLeft = 0;
+            allGoods.forEach(item => item.remove());
+            for (let i = 0; i < number; i++) {
+                const num = randomNum(0, goodsList.length - 1);
+                for (let i = 0; i < 3; i++) {
+                    createGoods(goodsList[num]);
+                }
+            }
+            allGoods = document.querySelectorAll('.goods');
+        }
+
+        gameStart(10);
+
+        selectLevel.addEventListener('input', () => gameStart(selectLevel.value));
+
+        disorganize.addEventListener('click', () => {
+            allGoods.forEach(item => {
+                if(!item.getAttribute('onclick')) return;
+                item.style.top = randomNum(50, window.innerHeight - 222) + 'px';
+                item.style.left = randomNum(20, window.innerWidth - 70) + 'px';
+            });
+        });
+
+        advertising.addEventListener('click', () => {
+            alert("allGoods.forEach(item => item.click());\n在控制台输入代码后直接游戏胜利");
+        });
+
+
+        function createdAudio(src) {
+            let audio = document.createElement('audio');
+            document.body.appendChild(audio);
+            audio.autoplay = true;
+            audio.setAttribute('src', src);
+            audio.play();
+            audio.addEventListener('ended', e => e.target.remove());
+        }
+
+        audio.addEventListener('click' ,() => {
+            BGAudio.setAttribute('src', 'audio/背景音乐.mp3');
+            BGAudio.volume = 0.8;
+            BGAudio.play();
+        });
+    </script>
+</body>
+
+</html>
