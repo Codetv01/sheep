@@ -230,8 +230,10 @@
         advertising.addEventListener('click', () => {
             if(confirm("点击确定后随机消除一个种类")) {
                 const mark = document.querySelectorAll(`[mark="${markNum}"]`);
-                mark.forEach(item => item.click());
                 markNum++;
+                mark.forEach(item => item.click());
+                allGoods = document.querySelectorAll('.goods');
+                markNum >= goodsList.length && gameFinish('恭喜你胜利了', 'audio/胜利2.mp3');
             }
         });
 
