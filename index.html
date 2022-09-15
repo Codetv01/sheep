@@ -21,15 +21,15 @@
 
         .operation {
             width: 80px;
-			height: 40px;
-			position: fixed;
-			background-color: #FFA042;
-			border-radius: 3px;
-			border: 1px solid #FFA042;
+            height: 40px;
+            position: fixed;
+            background-color: #FFA042;
+            border-radius: 3px;
+            border: 1px solid #FFA042;
             color: #531c01;
-			border: none;
-			padding: 3px;
-			bottom: 90px;
+            border: none;
+            padding: 3px;
+            bottom: 90px;
         }
 
         .disorganize {
@@ -37,39 +37,47 @@
         }
 
         .selectLevel {
-			left: 150px;
-		}
+            left: 155px;
+        }
 
         .advertising {
-			left: 270px;
+            left: 280px;
         }
 
         .audio {
-            width: 50px;
-			height: 28px;
+            width: 70px;
+            height: 28px;
             top: 3px !important;
             left: 3px;
+        }
+
+        @keyframes fade {
+            0% {}
+
+            100% {
+                opacity: 0;
+            }
         }
     </style>
 </head>
 
 <body>
-    <button class="audio operation">音乐</button>
+    <button class="audio">背景音乐</button>
     <button class="disorganize operation">随机打乱</button>
     <button class="advertising operation">看广告</button>
 
     <select class="selectLevel operation">
-		<option value="6">第一关</option>
-		<option value="12">第二关</option>
-		<option value="20">第三关</option>
-		<option value="30">第四关</option>
-		<option value="40">第五关</option>
-		<option value="50">第六关</option>
-		<option value="60">第七关</option>
-		<option value="70">第八关</option>
-		<option value="85">第九关</option>
-		<option value="100">第十关</option>
-	</select>
+        <option value="6">第一关</option>
+        <option value="12">第二关</option>
+        <option value="20">第三关</option>
+        <option value="30">第四关</option>
+        <option value="40">第五关</option>
+        <option value="50">第六关</option>
+        <option value="60">第七关</option>
+        <option value="70">第八关</option>
+        <option value="85">第九关</option>
+        <option value="100">第十关</option>
+    </select>
 
     <div class="box"></div>
 
@@ -126,7 +134,7 @@
         }
 
         // 如果是移动端，则更换css文件，并调整goods间隙
-        if(/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
+        if (/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
             const equipment = document.querySelector('.equipment');
             equipment.setAttribute('href', 'css/mobile.css');
             spacing = 48;
@@ -144,7 +152,7 @@
         }
 
         function goodsClick(self) {
-            if(boxVolume >= 7) return;
+            if (boxVolume >= 7) return;
             createdAudio('audio/点击.mp3');
             const newGoods = self.cloneNode();
             newGoods.style.top = 0;
@@ -159,11 +167,21 @@
             children.forEach(item => item.getAttribute('mark') == newGoods.getAttribute('mark') && count++);
             if (count >= 3) {
                 createdAudio('audio/得分.mp3');
-                children.forEach(item => item.getAttribute('mark') == newGoods.getAttribute('mark') && item.remove());
+                children.forEach(item => {
+                    if (item.getAttribute('mark') == newGoods.getAttribute('mark')) {
+                        item.style.animation = 'fade .3s linear';
+                        setTimeout(() => {
+                            item.remove();
+                            children = [...box.children];
+                            boxGoodsLeft = spacing * children.length
+                            children.forEach((item, index) => {
+                                item.style.transition = 'left .2s';
+                                item.style.left = index * spacing + 'px';
+                            });
+                        }, 200);
+                    }
+                });
                 boxVolume -= 3;
-                children = [...box.children];
-                children.forEach((item, index) => item.style.left = index * spacing + 'px');
-                boxGoodsLeft = spacing * children.length
             }
             boxVolume >= 7 && gameFinish('很遗憾你输了', 'audio/失败.mp3');
             allGoods = document.querySelectorAll('.goods');
@@ -194,8 +212,8 @@
 
         disorganize.addEventListener('click', () => {
             allGoods.forEach(item => {
-                if(!item.getAttribute('onclick')) return;
-                                item.style.transition = 'top 1s, left 1s';
+                if (!item.getAttribute('onclick')) return;
+                item.style.transition = 'top 1s, left 1s';
                 item.style.top = randomNum(50, window.innerHeight - 222) + 'px';
                 item.style.left = randomNum(20, window.innerWidth - 70) + 'px';
             });
@@ -215,7 +233,7 @@
             audio.addEventListener('ended', e => e.target.remove());
         }
 
-        audio.addEventListener('click' ,() => {
+        audio.addEventListener('click', () => {
             BGAudio.setAttribute('src', 'audio/背景音乐.mp3');
             BGAudio.volume = 0.8;
             BGAudio.play();
