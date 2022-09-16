@@ -185,10 +185,14 @@
             let count = 0;
             let children = [...box.children];
             children.forEach(item => item.getAttribute('mark') == newGoods.getAttribute('mark') && count++);
+            // 防止删除三个以上
+            let index = 0;
             if (count >= 3) {
                 audioScore.play();
                 children.forEach(item => {
                     if (item.getAttribute('mark') == newGoods.getAttribute('mark')) {
+                        if(index >= 3) return;
+                        index++;
                         item.style.animation = 'fade .3s linear';
                         setTimeout(() => {
                             item.remove();
