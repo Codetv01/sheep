@@ -76,7 +76,7 @@
     <button class="reset operation">重新开始</button>
 
     <select class="selectLevel operation">
-        <option value="6,一">第一关</option>
+        <option value="6,一" selected>第一关</option>
         <option value="12,二">第二关</option>
         <option value="20,三">第三关</option>
         <option value="30,四">第四关</option>
@@ -235,7 +235,7 @@
             allGoods.forEach(item => item.style.animation = `enter .3s`);
         }
 
-        gameStart(10);
+        gameStart(selectLevel.value.split(',')[0]);
 
         selectLevel.addEventListener('input', () => gameStart(selectLevel.value.split(',')[0]));
 
