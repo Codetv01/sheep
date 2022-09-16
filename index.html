@@ -62,13 +62,19 @@
                 transform: scale(0.5);
             }
         }
+
+        @keyframes enter {
+            0% {
+                transform: scale(0);
+            }
+        }
     </style>
 </head>
 
 <body>
     <button class="audio">背景音乐</button>
     <button class="disorganize operation">随机打乱</button>
-    <button class="advertising operation">看广告</button>
+    <button class="advertising operation">重置</button>
 
     <select class="selectLevel operation">
         <option value="6">第一关</option>
@@ -89,6 +95,7 @@
     <audio muted autoplay src="audio/胜利2.mp3"></audio>
     <audio autoplay loop src="audio/背景音乐.mp3" class="BGAudio"></audio>
     <audio autoplay src="audio/得分.mp3" class="audioScore"></audio>
+    <audio autoplay class="audioFinish"></audio>
 
     <script>
         const box = document.querySelector('.box');
@@ -103,6 +110,7 @@
         const BGAudio = document.querySelector('.BGAudio');
         const audio = document.querySelector('.audio');
         const audioScore = document.querySelector('.audioScore');
+        const audioFinish = document.querySelector('.audioFinish');
 
         const goodsList = [{
             mark: 1,
@@ -204,8 +212,9 @@
         }
 
         function gameFinish(str, audio) {
-            createdAudio(audio);
             setTimeout(() => alert(str), 200);
+            audioFinish.setAttribute('src', audio);
+            audioFinish.play();
         }
 
         function gameStart(number) {
@@ -219,6 +228,7 @@
                 }
             }
             allGoods = document.querySelectorAll('.goods');
+            allGoods.forEach(item => item.style.animation = `enter .3s`);
         }
 
         gameStart(10);
@@ -234,9 +244,7 @@
             });
         });
 
-        advertising.addEventListener('click', () => {
-            alert('allGoods.forEach(item => item.click());');
-        });
+        advertising.addEventListener('click', () => gameStart(selectLevel.value));
 
         let audioThrottling = false;
 
