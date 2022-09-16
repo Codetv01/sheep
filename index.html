@@ -88,6 +88,7 @@
     <audio muted autoplay src="audio/失败.mp3"></audio>
     <audio muted autoplay src="audio/胜利2.mp3"></audio>
     <audio autoplay loop src="audio/背景音乐.mp3" class="BGAudio"></audio>
+    <audio autoplay src="audio/得分.mp3" class="audioScore"></audio>
 
     <script>
         const box = document.querySelector('.box');
@@ -101,6 +102,7 @@
         const advertising = document.querySelector('.advertising');
         const BGAudio = document.querySelector('.BGAudio');
         const audio = document.querySelector('.audio');
+        const audioScore = document.querySelector('.audioScore');
 
         const goodsList = [{
             mark: 1,
@@ -167,7 +169,7 @@
             newGoods.style.opacity = 0;
             box.appendChild(newGoods);
             self.style.transition = 'top .4s, left .4s';
-            self.style.top = box.offsetTop + 1 + 'px';
+            self.style.top = box.offsetTop + 2 + 'px';
             self.style.left = boxGoodsLeft + box.offsetLeft - self.offsetWidth + 'px';
             setTimeout(() => {
                 newGoods.style.opacity = 1;
@@ -177,7 +179,7 @@
             let children = [...box.children];
             children.forEach(item => item.getAttribute('mark') == newGoods.getAttribute('mark') && count++);
             if (count >= 3) {
-                createdAudio('audio/得分.mp3');
+                audioScore.play();
                 children.forEach(item => {
                     if (item.getAttribute('mark') == newGoods.getAttribute('mark')) {
                         item.style.animation = 'fade .3s linear';
