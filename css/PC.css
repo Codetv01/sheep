@@ -21,6 +21,12 @@
     background-color: white;
 }
 
+.disorganize,
+.selectLevel,
+.advertising {
+    bottom: 40px !important;
+}
+
 /* .btn {
     width: 80px;
     height: 40px;
