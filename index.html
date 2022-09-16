@@ -169,7 +169,7 @@
 
             self.style.transition = 'top .5s, left .5s';
             self.style.top = box.offsetTop + 1 + 'px';
-            self.style.left = boxGoodsLeft - 20 + 'px';
+            self.style.left = boxGoodsLeft + box.offsetLeft - self.offsetWidth + 'px';
 
             setTimeout(() => {
                 newGoods.style.opacity = 1;
