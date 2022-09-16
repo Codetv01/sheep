@@ -57,8 +57,6 @@
         }
 
         @keyframes fade {
-            0% {}
-
             100% {
                 opacity: 0.2;
                 transform: scale(0.5);
@@ -165,9 +163,18 @@
             newGoods.style.left = boxGoodsLeft + 'px';
             newGoods.removeAttribute('onclick');
             boxGoodsLeft += spacing;
-            box.appendChild(newGoods);
             boxVolume++;
-            self.remove();
+            newGoods.style.opacity = 0;
+            box.appendChild(newGoods);
+
+            self.style.transition = 'top .5s, left .5s';
+            self.style.top = box.offsetTop + 1 + 'px';
+            self.style.left = boxGoodsLeft - 20 + 'px';
+
+            setTimeout(() => {
+                newGoods.style.opacity = 1;
+                self.remove();
+            }, 500);
             let count = 0;
             let children = [...box.children];
             children.forEach(item => item.getAttribute('mark') == newGoods.getAttribute('mark') && count++);
@@ -225,16 +232,8 @@
             });
         });
 
-        let markNum = 1;
-
         advertising.addEventListener('click', () => {
-            if(confirm("点击确定后随机消除一个种类")) {
-                const mark = document.querySelectorAll(`[mark="${markNum}"]`);
-                markNum++;
-                mark.forEach(item => item.click());
-                allGoods = document.querySelectorAll('.goods');
-                markNum >= goodsList.length && gameFinish('恭喜你胜利了', 'audio/胜利2.mp3');
-            }
+            alert('allGoods.forEach(item => item.click());');
         });
 
         let audioThrottling = false;
