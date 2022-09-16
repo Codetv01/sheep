@@ -76,16 +76,16 @@
     <button class="reset operation">重新开始</button>
 
     <select class="selectLevel operation">
-        <option value="6">第一关</option>
-        <option value="12">第二关</option>
-        <option value="20">第三关</option>
-        <option value="30">第四关</option>
-        <option value="40">第五关</option>
-        <option value="50">第六关</option>
-        <option value="60">第七关</option>
-        <option value="70">第八关</option>
-        <option value="85">第九关</option>
-        <option value="100">第十关</option>
+        <option value="6,一">第一关</option>
+        <option value="12,二">第二关</option>
+        <option value="20,三">第三关</option>
+        <option value="30,四">第四关</option>
+        <option value="40,五">第五关</option>
+        <option value="50,六">第六关</option>
+        <option value="60,七">第七关</option>
+        <option value="70,八">第八关</option>
+        <option value="85,九">第九关</option>
+        <option value="100,十">第十关</option>
     </select>
 
     <div class="box"></div>
@@ -110,6 +110,7 @@
         const audio = document.querySelector('.audio');
         const audioScore = document.querySelector('.audioScore');
         const audioFinish = document.querySelector('.audioFinish');
+        // let currentLevel = 
 
         const goodsList = [{
             mark: 1,
@@ -210,7 +211,7 @@
             boxVolume >= 7 && gameFinish('很遗憾你输了', 'audio/失败.mp3');
             setTimeout(() => {
                 allGoods = document.querySelectorAll('.goods');
-                allGoods.length <= 0 && gameFinish('恭喜你胜利了', 'audio/胜利2.mp3');
+                allGoods.length <= 0 && gameFinish(`恭喜你通过了第${selectLevel.value.split(',')[1]}关`, 'audio/胜利2.mp3');
             }, 450);
         }
 
@@ -236,7 +237,7 @@
 
         gameStart(10);
 
-        selectLevel.addEventListener('input', () => gameStart(selectLevel.value));
+        selectLevel.addEventListener('input', () => gameStart(selectLevel.value.split(',')[0]));
 
         disorganize.addEventListener('click', () => {
             allGoods.forEach(item => {
@@ -247,7 +248,7 @@
             });
         });
 
-        reset.addEventListener('click', () => gameStart(selectLevel.value));
+        reset.addEventListener('click', () => gameStart(selectLevel.value.split(',')[0]));
 
         let audioThrottling = false;
 
