@@ -238,7 +238,7 @@
         disorganize.addEventListener('click', () => {
             allGoods.forEach(item => {
                 if (!item.getAttribute('onclick')) return;
-                item.style.transition = 'top 1s, left 1s';
+                item.style.transition = 'top .8s, left .5s';
                 item.style.top = randomNum(50, window.innerHeight - 222) + 'px';
                 item.style.left = randomNum(20, window.innerWidth - 70) + 'px';
             });
