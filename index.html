@@ -71,8 +71,8 @@
 </head>
 
 <body>
-    <button class="audio"><?xml version="1.0" encoding="UTF-8"?><svg width="25" height="25" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M30 34.5C30 32.567 31.567 31 33.5 31H41V34.4C41 36.3882 39.3882 38 37.4 38H33.5C31.567 38 30 36.433 30 34.5Z" fill="none" stroke="#ee830e" stroke-width="4" stroke-linejoin="round"/><path d="M6 38.5C6 36.567 7.567 35 9.5 35H16V38.4C16 40.3882 14.3882 42 12.4 42H9.5C7.567 42 6 40.433 6 38.5Z" fill="none" stroke="#ee830e" stroke-width="4" stroke-linejoin="round"/><path d="M16 18.044V18.044L41 12.125" stroke="#ee830e" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 38V10L41 4V33.6924" stroke="#ee830e" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-    <button class="disorganize operation">随机打乱</button>
+    <button class="audio"><?xml version="1.0" encoding="UTF-8"?><svg width="26" height="26" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M30 34.5C30 32.567 31.567 31 33.5 31H41V34.4C41 36.3882 39.3882 38 37.4 38H33.5C31.567 38 30 36.433 30 34.5Z" fill="none" stroke="#ee830e" stroke-width="4" stroke-linejoin="round"/><path d="M6 38.5C6 36.567 7.567 35 9.5 35H16V38.4C16 40.3882 14.3882 42 12.4 42H9.5C7.567 42 6 40.433 6 38.5Z" fill="none" stroke="#ee830e" stroke-width="4" stroke-linejoin="round"/><path d="M16 18.044V18.044L41 12.125" stroke="#ee830e" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 38V10L41 4V33.6924" stroke="#ee830e" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <button class="disorganize operation">打乱</button>
     <button class="reset operation">重新开始</button>
 
     <select class="selectLevel operation">
@@ -84,8 +84,8 @@
         <option value="50,六">第六关</option>
         <option value="60,七">第七关</option>
         <option value="70,八">第八关</option>
-        <option value="85,九">第九关</option>
-        <option value="100,十">第十关</option>
+        <option value="90,九">第九关</option>
+        <option value="110,十">第十关</option>
     </select>
 
     <div class="box"></div>
@@ -93,24 +93,20 @@
     <audio muted autoplay src="audio/失败.mp3"></audio>
     <audio muted autoplay src="audio/胜利2.mp3"></audio>
     <audio autoplay loop src="audio/背景音乐.mp3" class="BGAudio"></audio>
-    <audio autoplay src="audio/得分.mp3" class="audioScore"></audio>
-    <audio autoplay class="audioFinish"></audio>
 
     <script>
-        const box = document.querySelector('.box');
         const body = document.body;
+        const box = document.querySelector('.box');
         let allGoods = document.querySelectorAll('.goods');
-        let boxGoodsLeft = 0;
-        let boxVolume = 0;
-        let spacing = 65;
         const selectLevel = document.querySelector('.selectLevel');
         const disorganize = document.querySelector('.disorganize');
         const reset = document.querySelector('.reset');
         const BGAudio = document.querySelector('.BGAudio');
         const audio = document.querySelector('.audio');
-        const audioScore = document.querySelector('.audioScore');
-        const audioFinish = document.querySelector('.audioFinish');
-        // let currentLevel = 
+        let boxGoodsLeft = 0;
+        let boxVolume = 0;
+        let spacing = 65;
+        let disorganizeNum = 3;
 
         const goodsList = [{
             mark: 1,
@@ -187,13 +183,13 @@
             let children = [...box.children];
             children.forEach(item => item.getAttribute('mark') == newGoods.getAttribute('mark') && count++);
             // 防止删除三个以上
-            let index = 0;
+            let deleteNum = 0;
             if (count >= 3) {
-                audioScore.play();
+                createdAudio('audio/得分.mp3');
                 children.forEach(item => {
                     if (item.getAttribute('mark') == newGoods.getAttribute('mark')) {
-                        if(index >= 3) return;
-                        index++;
+                        if(deleteNum >= 3) return;
+                        deleteNum++;
                         item.style.animation = 'fade .3s linear';
                         setTimeout(() => {
                             item.remove();
@@ -217,14 +213,16 @@
 
         function gameFinish(str, audio) {
             setTimeout(() => alert(str), 200);
-            audioFinish.setAttribute('src', audio);
-            audioFinish.play();
+            createdAudio(audio);
+            disorganizeNum = 0;
         }
 
         function gameStart(number) {
             boxVolume = 0;
             boxGoodsLeft = 0;
             allGoods.forEach(item => item.remove());
+            disorganizeNum = 3;
+            disorganize.innerText = `打乱 ${disorganizeNum}`;
             for (let i = 0; i < number; i++) {
                 const num = randomNum(0, goodsList.length - 1);
                 for (let i = 0; i < 3; i++) {
@@ -240,6 +238,9 @@
         selectLevel.addEventListener('input', () => gameStart(selectLevel.value.split(',')[0]));
 
         disorganize.addEventListener('click', () => {
+            if(disorganizeNum <= 0) return;
+            disorganizeNum--;
+            disorganize.innerText = `打乱 ${disorganizeNum}`;
             allGoods.forEach(item => {
                 if (!item.getAttribute('onclick')) return;
                 item.style.transition = 'top .8s, left .5s';
@@ -250,12 +251,7 @@
 
         reset.addEventListener('click', () => gameStart(selectLevel.value.split(',')[0]));
 
-        let audioThrottling = false;
-
         function createdAudio(src) {
-            if (audioThrottling) return;
-            audioThrottling = true;
-            setTimeout(() => audioThrottling = false, 200);
             let audio = document.createElement('audio');
             document.body.appendChild(audio);
             audio.autoplay = true;
@@ -269,6 +265,9 @@
             BGAudio.volume = 0.8;
             BGAudio.play();
         });
+
+        disorganize.innerText = `打乱 ${disorganizeNum}`;
+
     </script>
 </body>
 
