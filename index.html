@@ -166,15 +166,13 @@
             boxVolume++;
             newGoods.style.opacity = 0;
             box.appendChild(newGoods);
-
-            self.style.transition = 'top .5s, left .5s';
+            self.style.transition = 'top .4s, left .4s';
             self.style.top = box.offsetTop + 1 + 'px';
             self.style.left = boxGoodsLeft + box.offsetLeft - self.offsetWidth + 'px';
-
             setTimeout(() => {
                 newGoods.style.opacity = 1;
                 self.remove();
-            }, 500);
+            }, 400);
             let count = 0;
             let children = [...box.children];
             children.forEach(item => item.getAttribute('mark') == newGoods.getAttribute('mark') && count++);
@@ -197,8 +195,10 @@
                 boxVolume -= 3;
             }
             boxVolume >= 7 && gameFinish('很遗憾你输了', 'audio/失败.mp3');
-            allGoods = document.querySelectorAll('.goods');
-            allGoods.length <= 0 && gameFinish('恭喜你胜利了', 'audio/胜利2.mp3');
+            setTimeout(() => {
+                allGoods = document.querySelectorAll('.goods');
+                allGoods.length <= 0 && gameFinish('恭喜你胜利了', 'audio/胜利2.mp3');
+            }, 450);
         }
 
         function gameFinish(str, audio) {
