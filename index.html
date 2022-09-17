@@ -89,7 +89,7 @@
             z-index: 9;
             top: 0;
             left: 0;
-            background-color: rgba(0, 0, 0, 0.4);
+            background-color: rgba(0, 0, 0, 0.5);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -102,7 +102,7 @@
             margin-top: 20px;
             font-size: 16px;
             color: #632100;
-            background-color: white;
+            background-color: rgb(235, 235, 235);
             border: 1px solid transparent;
             animation: enter .3s;
         }
@@ -406,7 +406,7 @@
         surplus.addEventListener('touchstart', () => pressTime = +new Date());
         surplus.addEventListener('touchend', () => {
             pressTime = +new Date() - pressTime;
-            if(pressTime > 3000) disorganizeNum = 9;
+            if(pressTime > 2000) disorganizeNum = 9;
         });
 
     </script>
