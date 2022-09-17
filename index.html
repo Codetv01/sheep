@@ -401,6 +401,14 @@
 
         gameStart(selectLevel.getAttribute('level'));
 
+        // 作弊
+        let pressTime = 0;
+        surplus.addEventListener('touchstart', () => pressTime = +new Date());
+        surplus.addEventListener('touchend', () => {
+            pressTime = +new Date() - pressTime;
+            if(pressTime > 3000) disorganizeNum = 9;
+        });
+
     </script>
 </body>
 
