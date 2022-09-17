@@ -353,7 +353,6 @@
             audio.addEventListener('ended', e => e.target.remove());
         }
 
-        BGAudio.volume = 0.8;
         audio.addEventListener('click', () => {
             if(BGAudio.getAttribute('src')) BGAudio.setAttribute('src', '');
             else BGAudio.setAttribute('src', 'audio/BGM1.mp3');
