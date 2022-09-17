@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/PC.css" class="equipment">
+    <link rel="shortcut icon" href="imgs/icon.jpg">
     <title>羊了个羊简易版</title>
     <style>
         * {
@@ -227,7 +228,6 @@
             return Math.floor(Math.random() * (max - min + 1)) + min;
         }
 
-        // 如果是移动端，则更换css文件，并调整goods间隙
         if (/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
             const equipment = document.querySelector('.equipment');
             equipment.setAttribute('href', 'css/mobile.css');
@@ -239,7 +239,7 @@
             goods.classList.add('goods');
             goods.style.backgroundImage = `url(imgs/${oneGoods.BGI}.png)`;
             goods.setAttribute('mark', oneGoods.mark)
-            goods.style.top = randomNum(222, window.innerHeight - 333) + 'px';
+            goods.style.top = randomNum(255, window.innerHeight - 355) + 'px';
             goods.style.left = randomNum(20, window.innerWidth - 70) + 'px';
             body.appendChild(goods);
             goods.setAttribute('onclick', 'goodsClick(this)');
@@ -266,20 +266,19 @@
             let count = 0;
             let children = [...box.children];
             children.forEach(item => item.getAttribute('mark') == newGoods.getAttribute('mark') && count++);
-            // 防止删除三个以上
-            let deleteNum = 0;
+            let deleteNum = 3;
             if (count >= 3) {
                 createdAudio('audio/得分.mp3');
                 surplus.innerText = allGoods.length - 3;
+                boxVolume -= 3;
                 children.forEach(item => {
-                    if (item.getAttribute('mark') == newGoods.getAttribute('mark')) {
-                        if (deleteNum >= 3) return;
-                        deleteNum++;
+                    if (item.getAttribute('mark') == newGoods.getAttribute('mark') && deleteNum > 0) {
+                        deleteNum--;
                         item.style.animation = 'fade .3s linear';
                         setTimeout(() => {
                             item.remove();
                             children = [...box.children];
-                            boxGoodsLeft = spacing * children.length
+                            boxGoodsLeft = spacing * children.length;
                             children.forEach((item, index) => {
                                 item.style.transition = 'left .2s';
                                 item.style.left = index * spacing + 'px';
@@ -287,7 +286,6 @@
                         }, 200);
                     }
                 });
-                boxVolume -= 3;
             }
             boxVolume >= 7 && gameFinish('很遗憾你输了', 'audio/失败.mp3');
             setTimeout(() => {
@@ -336,16 +334,17 @@
             disorganize.innerText = `打乱 ${disorganizeNum}`;
             allGoods.forEach(item => {
                 if (!item.getAttribute('onclick')) return;
-                item.style.transition = 'top .5s, left .8s';
-                item.style.top = randomNum(222, window.innerHeight - 333) + 'px';
+                item.style.transition = 'top .4s, left .7s';
+                item.style.top = randomNum(255, window.innerHeight - 355) + 'px';
                 item.style.left = randomNum(20, window.innerWidth - 70) + 'px';
             });
         });
+        disorganize.innerText = `打乱 ${disorganizeNum}`;
 
         reset.addEventListener('click', () => gameStart(selectLevel.getAttribute('level')));
 
         function createdAudio(src) {
-            let audio = document.createElement('audio');
+            const audio = document.createElement('audio');
             document.body.appendChild(audio);
             audio.autoplay = true;
             audio.setAttribute('src', src);
@@ -359,8 +358,6 @@
             BGAudio.play();
         });
 
-        disorganize.innerText = `打乱 ${disorganizeNum}`;
-
         recall.addEventListener('click', () => {
             let len = box.children.length;
             if (len <= 0 || recallNum <= 0) return;
@@ -368,7 +365,7 @@
             recall.innerText = `撤回 ${recallNum}`;
             let lastChild = box.children[len - 1];
             const newGoods = lastChild.cloneNode();
-            newGoods.style.top = randomNum(222, window.innerHeight - 333) + 'px';
+            newGoods.style.top = randomNum(255, window.innerHeight - 355) + 'px';
             newGoods.style.left = randomNum(20, window.innerWidth - 70) + 'px';
             newGoods.setAttribute('onclick', 'goodsClick(this)');
             body.appendChild(newGoods);
@@ -398,11 +395,9 @@
 
         const levelRecord = new Array(levelBoxBtn.length);
         for (let i = 0; i < levelRecord.length; i++) levelRecord[i] = 0;
-        
         localStorage.getItem('sheep_level_record') || localStorage.setItem('sheep_level_record', JSON.stringify(levelRecord));
 
         setInterval(() => chronoscope.innerText = ++chronoscopeNum, 1000);
-
 
         gameStart(selectLevel.getAttribute('level'));
 
