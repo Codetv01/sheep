@@ -19,40 +19,49 @@
             overflow: hidden;
         }
 
-        .operation {
-            width: 80px;
+        .btn {
+            width: 66px;
             height: 40px;
-            position: fixed;
             background-color: #FFA042;
             border-radius: 3px;
-            border: 1px solid #FFA042;
-            color: #531c01;
+            color: #632100;
             border: none;
-            padding: 3px;
-            bottom: 90px;
-        }
-
-        .disorganize {
-            left: 30px;
-        }
-
-        .selectLevel {
-            left: 155px;
+            margin: 0 8px;
         }
 
         .reset {
-            left: 280px;
+            width: 75px;
         }
 
         .audio {
             position: fixed;
-            top: 3px;
-            left: 3px;
-            color: #cf6800;
+            top: 30px;
+            left: 20px;
             background-color: white;
             border: none;
+        }
+
+        .surplus {
+            position: fixed;
+            top: 30px;
+            right: 20px;
+            color: #ff5900;
+            font-size: 20px;
             font-weight: 800;
+        }
+
+        .surplus::before {
+            content: '剩余 ';
             font-size: 16px;
+        }
+
+        .operate {
+            width: 100vw;
+            position: fixed;
+            bottom: 120px;
+            left: 0;
+            display: flex;
+            justify-content: center;
         }
 
         @keyframes fade {
@@ -67,32 +76,99 @@
                 transform: scale(0);
             }
         }
+
+        .levelBox {
+            display: none;
+        }
+
+        .levelBox>div {
+            width: 100vw;
+            height: 100vh;
+            position: fixed;
+            z-index: 9;
+            top: 0;
+            left: 0;
+            background-color: rgba(0, 0, 0, 0.4);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .levelBox>div button {
+            width: 200px;
+            height: 45px;
+            margin-top: 20px;
+            font-size: 16px;
+            color: #632100;
+            background-color: white;
+            border: 1px solid transparent;
+            animation: enter .3s;
+        }
+
+        .levelBox>div button.win {
+            color: rgb(255, 85, 0);
+            font-weight: 800;
+        }
+
+        .chronoscope {
+            position: fixed;
+            top: 75px;
+            right: 20px;
+            color: #ff7700;
+            font-weight: 700;
+        }
+
+        .chronoscope::after {
+            content: ' s';
+        }
     </style>
 </head>
 
 <body>
-    <button class="audio"><?xml version="1.0" encoding="UTF-8"?><svg width="26" height="26" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M30 34.5C30 32.567 31.567 31 33.5 31H41V34.4C41 36.3882 39.3882 38 37.4 38H33.5C31.567 38 30 36.433 30 34.5Z" fill="none" stroke="#ee830e" stroke-width="4" stroke-linejoin="round"/><path d="M6 38.5C6 36.567 7.567 35 9.5 35H16V38.4C16 40.3882 14.3882 42 12.4 42H9.5C7.567 42 6 40.433 6 38.5Z" fill="none" stroke="#ee830e" stroke-width="4" stroke-linejoin="round"/><path d="M16 18.044V18.044L41 12.125" stroke="#ee830e" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 38V10L41 4V33.6924" stroke="#ee830e" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-    <button class="disorganize operation">打乱</button>
-    <button class="reset operation">重新开始</button>
+    <button class="audio">
+        <?xml version="1.0" encoding="UTF-8"?><svg width="26" height="26" viewBox="0 0 48 48" fill="none"
+            xmlns="http://www.w3.org/2000/svg">
+            <path
+                d="M30 34.5C30 32.567 31.567 31 33.5 31H41V34.4C41 36.3882 39.3882 38 37.4 38H33.5C31.567 38 30 36.433 30 34.5Z"
+                fill="none" stroke="#ff5900" stroke-width="4" stroke-linejoin="round" />
+            <path
+                d="M6 38.5C6 36.567 7.567 35 9.5 35H16V38.4C16 40.3882 14.3882 42 12.4 42H9.5C7.567 42 6 40.433 6 38.5Z"
+                fill="none" stroke="#ff5900" stroke-width="4" stroke-linejoin="round" />
+            <path d="M16 18.044V18.044L41 12.125" stroke="#ff5900" stroke-width="4" stroke-linecap="round"
+                stroke-linejoin="round" />
+            <path d="M16 38V10L41 4V33.6924" stroke="#ff5900" stroke-width="4" stroke-linecap="round"
+                stroke-linejoin="round" /></svg>
+    </button>
+    <div class="surplus"></div>
+    <div class="chronoscope">0</div>
 
-    <select class="selectLevel operation">
-        <option value="6,一" selected>第一关</option>
-        <option value="12,二">第二关</option>
-        <option value="20,三">第三关</option>
-        <option value="30,四">第四关</option>
-        <option value="40,五">第五关</option>
-        <option value="50,六">第六关</option>
-        <option value="60,七">第七关</option>
-        <option value="70,八">第八关</option>
-        <option value="90,九">第九关</option>
-        <option value="110,十">第十关</option>
-    </select>
+    <div class="operate">
+        <button class="disorganize btn">打乱</button>
+        <button class="recall btn">撤回</button>
+        <button class="selectLevel btn" level="6" index="0">第一关</button>
+        <button class="reset btn">重新开始</button>
+    </div>
+    <div class="levelBox">
+        <div>
+            <button level="6" index="0">第一关</button>
+            <button level="10" index="1">第二关</button>
+            <button level="15" index="2">第三关</button>
+            <button level="22" index="3">第四关</button>
+            <button level="30" index="4">第五关</button>
+            <button level="40" index="5">第六关</button>
+            <button level="50" index="6">第七关</button>
+            <button level="70" index="7">第八关</button>
+            <button level="90" index="8">第九关</button>
+            <button level="110" index="9">第十关</button>
+        </div>
+    </div>
 
     <div class="box"></div>
 
     <audio muted autoplay src="audio/失败.mp3"></audio>
     <audio muted autoplay src="audio/胜利2.mp3"></audio>
-    <audio autoplay loop src="audio/背景音乐.mp3" class="BGAudio"></audio>
+    <audio autoplay loop class="BGAudio"></audio>
 
     <script>
         const body = document.body;
@@ -103,38 +179,46 @@
         const reset = document.querySelector('.reset');
         const BGAudio = document.querySelector('.BGAudio');
         const audio = document.querySelector('.audio');
+        const recall = document.querySelector('.recall');
+        const surplus = document.querySelector('.surplus');
+        const levelBox = document.querySelector('.levelBox');
+        const levelBoxDiv = document.querySelector('.levelBox>div');
+        const levelBoxBtn = document.querySelectorAll('.levelBox>div button');
+        const chronoscope = document.querySelector('.chronoscope');
         let boxGoodsLeft = 0;
         let boxVolume = 0;
         let spacing = 65;
         let disorganizeNum = 3;
+        let recallNum = 3;
+        let chronoscopeNum = 0;
 
         const goodsList = [{
             mark: 1,
-            BP: 'zoon1'
+            BGI: 'zoon1'
         }, {
             mark: 2,
-            BP: 'zoon2'
+            BGI: 'zoon2'
         }, {
             mark: 3,
-            BP: 'zoon3'
+            BGI: 'zoon3'
         }, {
             mark: 4,
-            BP: 'zoon4'
+            BGI: 'zoon4'
         }, {
             mark: 5,
-            BP: 'zoon5'
+            BGI: 'zoon5'
         }, {
             mark: 6,
-            BP: 'zoon6'
+            BGI: 'zoon6'
         }, {
             mark: 7,
-            BP: 'zoon7'
+            BGI: 'zoon7'
         }, {
             mark: 8,
-            BP: 'zoon8'
+            BGI: 'zoon8'
         }, {
             mark: 9,
-            BP: 'zoon9'
+            BGI: 'zoon9'
         }]
 
         function randomNum(min, max) {
@@ -153,9 +237,9 @@
         function createGoods(oneGoods) {
             const goods = document.createElement('div');
             goods.classList.add('goods');
-            goods.style.backgroundImage = `url(imgs/${oneGoods.BP}.png)`;
+            goods.style.backgroundImage = `url(imgs/${oneGoods.BGI}.png)`;
             goods.setAttribute('mark', oneGoods.mark)
-            goods.style.top = randomNum(50, window.innerHeight - 222) + 'px';
+            goods.style.top = randomNum(222, window.innerHeight - 333) + 'px';
             goods.style.left = randomNum(20, window.innerWidth - 70) + 'px';
             body.appendChild(goods);
             goods.setAttribute('onclick', 'goodsClick(this)');
@@ -186,9 +270,10 @@
             let deleteNum = 0;
             if (count >= 3) {
                 createdAudio('audio/得分.mp3');
+                surplus.innerText = allGoods.length - 3;
                 children.forEach(item => {
                     if (item.getAttribute('mark') == newGoods.getAttribute('mark')) {
-                        if(deleteNum >= 3) return;
+                        if (deleteNum >= 3) return;
                         deleteNum++;
                         item.style.animation = 'fade .3s linear';
                         setTimeout(() => {
@@ -207,14 +292,23 @@
             boxVolume >= 7 && gameFinish('很遗憾你输了', 'audio/失败.mp3');
             setTimeout(() => {
                 allGoods = document.querySelectorAll('.goods');
-                allGoods.length <= 0 && gameFinish(`恭喜你通过了第${selectLevel.value.split(',')[1]}关`, 'audio/胜利2.mp3');
+                if(allGoods.length <= 0) {
+                    gameFinish(`恭喜你通过了${selectLevel.innerText}\n用时${chronoscopeNum}秒`, 'audio/胜利2.mp3');
+                    const levelRecord = JSON.parse(localStorage.getItem('sheep_level_record'));
+                    levelRecord[selectLevel.getAttribute('index')]++;
+                    localStorage.setItem('sheep_level_record', JSON.stringify(levelRecord));
+                } 
             }, 450);
         }
 
         function gameFinish(str, audio) {
-            setTimeout(() => alert(str), 200);
+            setTimeout(() => {
+                alert(str);
+                selectLevel.click();
+            }, 200);
             createdAudio(audio);
             disorganizeNum = 0;
+            recallNum = 0;
         }
 
         function gameStart(number) {
@@ -223,33 +317,32 @@
             allGoods.forEach(item => item.remove());
             disorganizeNum = 3;
             disorganize.innerText = `打乱 ${disorganizeNum}`;
+            recallNum = 3;
+            recall.innerText = `撤回 ${recallNum}`;
+            chronoscopeNum = 0;
+            chronoscope.innerText = chronoscopeNum;
             for (let i = 0; i < number; i++) {
                 const num = randomNum(0, goodsList.length - 1);
-                for (let i = 0; i < 3; i++) {
-                    createGoods(goodsList[num]);
-                }
+                for (let i = 0; i < 3; i++) createGoods(goodsList[num]);
             }
             allGoods = document.querySelectorAll('.goods');
             allGoods.forEach(item => item.style.animation = `enter .3s`);
+            surplus.innerText = allGoods.length;
         }
 
-        gameStart(selectLevel.value.split(',')[0]);
-
-        selectLevel.addEventListener('input', () => gameStart(selectLevel.value.split(',')[0]));
-
         disorganize.addEventListener('click', () => {
-            if(disorganizeNum <= 0) return;
+            if (disorganizeNum <= 0) return;
             disorganizeNum--;
             disorganize.innerText = `打乱 ${disorganizeNum}`;
             allGoods.forEach(item => {
                 if (!item.getAttribute('onclick')) return;
-                item.style.transition = 'top .8s, left .5s';
-                item.style.top = randomNum(50, window.innerHeight - 222) + 'px';
+                item.style.transition = 'top .5s, left .8s';
+                item.style.top = randomNum(222, window.innerHeight - 333) + 'px';
                 item.style.left = randomNum(20, window.innerWidth - 70) + 'px';
             });
         });
 
-        reset.addEventListener('click', () => gameStart(selectLevel.value.split(',')[0]));
+        reset.addEventListener('click', () => gameStart(selectLevel.getAttribute('level')));
 
         function createdAudio(src) {
             let audio = document.createElement('audio');
@@ -260,13 +353,59 @@
             audio.addEventListener('ended', e => e.target.remove());
         }
 
+        BGAudio.volume = 0.8;
         audio.addEventListener('click', () => {
-            BGAudio.setAttribute('src', 'audio/背景音乐.mp3');
-            BGAudio.volume = 0.8;
+            if(BGAudio.getAttribute('src')) BGAudio.setAttribute('src', '');
+            else BGAudio.setAttribute('src', 'audio/背景音乐.mp3');
             BGAudio.play();
         });
 
         disorganize.innerText = `打乱 ${disorganizeNum}`;
+
+        recall.addEventListener('click', () => {
+            let len = box.children.length;
+            if (len <= 0 || recallNum <= 0) return;
+            recallNum--;
+            recall.innerText = `撤回 ${recallNum}`;
+            let lastChild = box.children[len - 1];
+            const newGoods = lastChild.cloneNode();
+            newGoods.style.top = randomNum(222, window.innerHeight - 333) + 'px';
+            newGoods.style.left = randomNum(20, window.innerWidth - 70) + 'px';
+            newGoods.setAttribute('onclick', 'goodsClick(this)');
+            body.appendChild(newGoods);
+            boxGoodsLeft -= spacing;
+            boxVolume--;
+            lastChild.remove();
+        });
+        recall.innerText = `撤回 ${recallNum}`;
+
+        selectLevel.addEventListener('click', () => {
+            levelBox.style.display = 'block';
+            const levelRecord = JSON.parse(localStorage.getItem('sheep_level_record'));
+            levelRecord.forEach((item, index) => item && levelBoxBtn[index].classList.add('win'));
+        });
+
+        levelBoxDiv.addEventListener('click', () => levelBox.style.display = 'none');
+
+        levelBoxBtn.forEach(item => {
+            item.addEventListener('click', e => {
+                const level = e.target.getAttribute('level');
+                gameStart(level);
+                selectLevel.setAttribute('level', level);
+                selectLevel.setAttribute('index', e.target.getAttribute('index'));
+                selectLevel.innerText = e.target.innerText;
+            });
+        });
+
+        const levelRecord = new Array(levelBoxBtn.length);
+        for (let i = 0; i < levelRecord.length; i++) levelRecord[i] = 0;
+        
+        localStorage.getItem('sheep_level_record') || localStorage.setItem('sheep_level_record', JSON.stringify(levelRecord));
+
+        setInterval(() => chronoscope.innerText = ++chronoscopeNum, 1000);
+
+
+        gameStart(selectLevel.getAttribute('level'));
 
     </script>
 </body>
