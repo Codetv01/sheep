@@ -28,14 +28,6 @@
             background-color: #b6b6b6;
         }
 
-        .goods {
-            padding: 22px;
-        }
-
-        .box {
-            border: 3px solid rgb(76, 148, 255);
-        }
-
         .reset {
             width: 75px;
         }
@@ -161,6 +153,25 @@
             outline: none;
         }
 
+        .goods {
+            padding: 22px;
+        }
+
+        .BGV {
+            position: fixed;
+            z-index: -9;
+            top: 0;
+            left: -90%;
+            width: auto;
+            height: 100vh;
+        }
+
+        .hrefSheep {
+            position: fixed;
+            top: 110px;
+            right: 20px;
+            color: white;
+        }
     </style>
 </head>
 
@@ -182,6 +193,9 @@
     <div class="surplus"></div>
     <div class="chronoscope">0</div>
     <button class="updataPage" onclick="javascript:location.reload();">更新</button>
+    <a href="king.html" class="hrefSheep">王了个王</a>
+
+    <video muted autoplay src="audio/BGV.mp4" class="BGV"></video>
 
     <div class="operate">
         <button class="disorganize btn">打乱</button>
