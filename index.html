@@ -312,6 +312,7 @@
         function gameStart(number) {
             boxVolume = 0;
             boxGoodsLeft = 0;
+            allGoods = document.querySelectorAll('.goods');
             allGoods.forEach(item => item.remove());
             disorganizeNum = 3;
             disorganize.innerText = `打乱 ${disorganizeNum}`;
@@ -402,12 +403,12 @@
         gameStart(selectLevel.getAttribute('level'));
 
         // 作弊
-        let pressTime = 0;
-        surplus.addEventListener('touchstart', () => pressTime = +new Date());
-        surplus.addEventListener('touchend', () => {
-            pressTime = +new Date() - pressTime;
-            if(pressTime > 2000) disorganizeNum = 9;
-        });
+        // let pressTime = 0;
+        // surplus.addEventListener('touchstart', () => pressTime = +new Date());
+        // surplus.addEventListener('touchend', () => {
+        //     pressTime = +new Date() - pressTime;
+        //     if(pressTime > 2000) disorganizeNum = 9;
+        // });
 
     </script>
 </body>
