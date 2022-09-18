@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/PC.css" class="equipment">
-    <link rel="shortcut icon" href="imgs/icon.jpg">
+    <link rel="shortcut icon" href="king/凯.webp">
     <title>王了个王简易版</title>
     <style>
         :root {
@@ -279,6 +279,7 @@
         let recallNum = 3;
         let chronoscopeNum = 0;
         let difficult = false;
+        let range = 350;
 
         const goodsList = [
             '阿骨朵', '艾琳', '嫦娥', '大师', '暃', '伽罗', '金蝉', '镜', '凯',
@@ -296,6 +297,7 @@
             const equipment = document.querySelector('.equipment');
             equipment.setAttribute('href', 'css/mobile.css');
             spacing = 48;
+            range = 0;
         }
 
         function heroRandomNum(src) {
@@ -311,7 +313,7 @@
             goods.style.backgroundImage = `url(king/${heroRandomNum(oneGoods)}.webp)`;
             goods.setAttribute('mark', oneGoods);
             goods.style.top = randomNum(222, window.innerHeight - 333) + 'px';
-            goods.style.left = randomNum(20, window.innerWidth - 70) + 'px';
+            goods.style.left = randomNum(20 + range, window.innerWidth - 70 - range) + 'px';
             body.appendChild(goods);
             goods.setAttribute('onclick', 'goodsClick(this)');
         }
