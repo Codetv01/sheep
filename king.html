@@ -158,7 +158,7 @@
         }
 
         .goods {
-            padding: 22px;
+            padding: 23px;
             border-color: rgb(255, 255, 255) !important;
         }
 
@@ -168,7 +168,7 @@
             left: 0;
             width: 100vw;
             text-align: center;
-            text-shadow: 0 0 10px black;
+            text-shadow: 0 0 5px black;
             height: auto;
             color: #ffffff;
             font-weight: 800;
@@ -198,7 +198,7 @@
             background-color: transparent;
             text-decoration: underline;
             color: rgb(255, 71, 71);
-            font-size: 15px;
+            font-size: 17px;
         }
     </style>
 </head>
@@ -384,7 +384,7 @@
                 heroAudio.play();
                 hint.style.display = 'block';
                 hint.innerText = hero.getAttribute('mark') + '已清空';
-                setTimeout(() => hint.style.display = 'none', 1000);
+                setTimeout(() => hint.style.display = 'none', 1500);
             }
         }
 
@@ -456,7 +456,7 @@
             recall.innerText = `撤回 ${recallNum}`;
             let lastChild = box.children[len - 1];
             const newGoods = lastChild.cloneNode();
-            newGoods.style.padding = '22px';
+            newGoods.style.padding = '23px';
             newGoods.style.top = randomNum(222, window.innerHeight - 333) + 'px';
             newGoods.style.left = randomNum(20, window.innerWidth - 70) + 'px';
             newGoods.setAttribute('onclick', 'goodsClick(this)');
@@ -501,7 +501,7 @@
                 addDifficult.innerText = '减少难度';
                 hint.innerText = '相同的英雄即可消除';
                 hint.style.display = 'block';
-                setTimeout(() => hint.style.display = 'none', 5000);
+                setTimeout(() => hint.style.display = 'none', 6000);
             }
             reset.click();
         });
