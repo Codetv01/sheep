@@ -367,7 +367,7 @@
                 if (!item.getAttribute('onclick')) return;
                 item.style.transition = 'top .4s, left .7s';
                 item.style.top = randomNum(222, window.innerHeight - 333) + 'px';
-                item.style.left = randomNum(20, window.innerWidth - 70) + 'px';
+                item.style.left = randomNum(20 + range, window.innerWidth - 70 - range) + 'px';
             });
         });
         disorganize.innerText = `打乱 ${disorganizeNum}`;
@@ -398,7 +398,7 @@
             const newGoods = lastChild.cloneNode();
             newGoods.style.padding = '23px';
             newGoods.style.top = randomNum(222, window.innerHeight - 333) + 'px';
-            newGoods.style.left = randomNum(20, window.innerWidth - 70) + 'px';
+            newGoods.style.left = randomNum(20 + range, window.innerWidth - 70 - range) + 'px';
             newGoods.setAttribute('onclick', 'goodsClick(this)');
             body.appendChild(newGoods);
             boxGoodsLeft -= spacing;
