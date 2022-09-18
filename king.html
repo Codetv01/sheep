@@ -281,9 +281,9 @@
         let difficult = false;
 
         const goodsList = [
-            '阿骨朵','艾琳','嫦娥','大师','暃','伽罗','戈雅','金蝉','镜','凯',
-            '澜','李信','马超','蒙恬','蒙犽','盘古','桑启','沈梦溪','司空震','司马懿',
-            '孙策','婉儿','西施','夏洛特','瑶','曜','元歌','云樱','云中君','猪八戒',
+            '阿骨朵', '艾琳', '嫦娥', '大师', '暃', '伽罗', '金蝉', '镜', '凯',
+            '澜', '李信', '马超', '蒙恬', '蒙犽', '盘古', '桑启', '沈梦溪', '司空震', '司马懿',
+            '孙策', '婉儿', '西施', '夏洛特', '瑶', '曜', '元歌', '云樱', '云中君', '猪八戒',
         ]
 
         function randomNum(min, max) {
@@ -299,9 +299,9 @@
         }
 
         function heroRandomNum(src) {
-            if(!difficult) return src;
-            const num = randomNum(1, 2);
-            if(num == 1) return src;
+            if (!difficult) return src;
+            const num = randomNum(1, 4);
+            if (num == 1) return src;
             else return src + num;
         }
 
@@ -377,9 +377,9 @@
             const arr = [...document.querySelectorAll('.goods')].filter(item => item.getAttribute('onclick'))
             let num = 0;
             arr.forEach(item => {
-                if(item.getAttribute('mark') == hero.getAttribute('mark')) return num++;
+                if (item.getAttribute('mark') == hero.getAttribute('mark')) return num++;
             });
-            if(num < 3) {
+            if (num < 3) {
                 heroAudio.setAttribute('src', `king/${hero.getAttribute('mark')}.mp3`);
                 heroAudio.play();
                 hint.style.display = 'block';
@@ -487,12 +487,13 @@
 
         const levelRecord = new Array(levelBoxBtn.length);
         for (let i = 0; i < levelRecord.length; i++) levelRecord[i] = 0;
-        localStorage.getItem('king_level_record') || localStorage.setItem('king_level_record', JSON.stringify(levelRecord));
+        localStorage.getItem('king_level_record') || localStorage.setItem('king_level_record', JSON.stringify(
+            levelRecord));
 
         setInterval(() => chronoscope.innerText = ++chronoscopeNum, 1000);
 
         addDifficult.addEventListener('click', () => {
-            if(difficult) {
+            if (difficult) {
                 difficult = false;
                 addDifficult.innerText = '增加难度';
             } else {
