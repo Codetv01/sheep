@@ -18,16 +18,9 @@
             width: 100vw;
             height: 100vh;
             overflow: hidden;
-        }
-
-        .btn {
-            width: 66px;
-            height: 40px;
-            background-color: #FFA042;
-            border-radius: 3px;
-            color: #632100;
-            border: none;
-            margin: 0 8px;
+            background-image: url(imgs/BG1.jpeg);
+            background-size: cover;
+            background-position: left;
         }
 
         .reset {
@@ -38,7 +31,7 @@
             position: fixed;
             top: 30px;
             left: 20px;
-            background-color: white;
+            background-color: transparent;
             border: none;
         }
 
@@ -65,6 +58,16 @@
             justify-content: center;
         }
 
+        .operate button {
+            width: 66px;
+            height: 40px;
+            background-color: #FFA042;
+            border-radius: 3px;
+            color: #632100;
+            border: none;
+            margin: 0 8px;
+        }
+
         @keyframes fade {
             100% {
                 opacity: 0.2;
@@ -89,7 +92,7 @@
             z-index: 9;
             top: 0;
             left: 0;
-            background-color: rgba(0, 0, 0, 0.5);
+            background-color: rgba(0, 0, 0, 0.4);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -102,13 +105,13 @@
             margin-top: 20px;
             font-size: 16px;
             color: #632100;
-            background-color: rgb(235, 235, 235);
+            background-color: rgb(250, 250, 250);
             border: 1px solid transparent;
             animation: enter .3s;
         }
 
         .levelBox>div button.win {
-            color: rgb(255, 85, 0);
+            color: rgb(254, 85, 0);
             font-weight: 800;
         }
 
@@ -121,24 +124,26 @@
         }
 
         .chronoscope::after {
-            content: ' s';
+            content: ' S';
         }
 
         .updataPage {
-            width: 20px;
+            width: 23px;
             color: #ff7700;
             font-size: 14px;
             position: fixed;
-            top: 70px;
+            top: 75px;
             left: 24px;
-            border: 1px solid #ff7700;
+            border: 2px solid #ff7700;
+            background-color: transparent;
+            font-weight: 800;
         }
     </style>
 </head>
 
 <body>
     <button class="audio">
-        <?xml version="1.0" encoding="UTF-8"?><svg width="26" height="26" viewBox="0 0 48 48" fill="none"
+        <?xml version="1.0" encoding="UTF-8"?><svg width="30" height="30" viewBox="0 0 48 48" fill="none"
             xmlns="http://www.w3.org/2000/svg">
             <path
                 d="M30 34.5C30 32.567 31.567 31 33.5 31H41V34.4C41 36.3882 39.3882 38 37.4 38H33.5C31.567 38 30 36.433 30 34.5Z"
@@ -171,8 +176,8 @@
             <button level="40" index="5">第六关</button>
             <button level="50" index="6">第七关</button>
             <button level="70" index="7">第八关</button>
-            <button level="90" index="8">第九关</button>
-            <button level="110" index="9">第十关</button>
+            <button level="95" index="8">第九关</button>
+            <button level="120" index="9">第十关</button>
         </div>
     </div>
 
@@ -204,34 +209,11 @@
         let recallNum = 3;
         let chronoscopeNum = 0;
 
-        const goodsList = [{
-            mark: 1,
-            BGI: 'zoon1'
-        }, {
-            mark: 2,
-            BGI: 'zoon2'
-        }, {
-            mark: 3,
-            BGI: 'zoon3'
-        }, {
-            mark: 4,
-            BGI: 'zoon4'
-        }, {
-            mark: 5,
-            BGI: 'zoon5'
-        }, {
-            mark: 6,
-            BGI: 'zoon6'
-        }, {
-            mark: 7,
-            BGI: 'zoon7'
-        }, {
-            mark: 8,
-            BGI: 'zoon8'
-        }, {
-            mark: 9,
-            BGI: 'zoon9'
-        }]
+        const goodsList = [
+            'zoon1', 'zoon2', 'zoon3', 'zoon4', 'zoon5', 'zoon6', 'zoon7', 'zoon8', 'zoon9',
+            'fruit1', 'fruit2', 'fruit3', 'fruit4', 'fruit5', 'fruit6', 'fruit7', 'fruit8', 'fruit9',
+            'cake1', 'cake2', 'cake3', 'cake4', 'cake5', 'cake6', 'cake7', 'cake8', 'cake9'
+        ]
 
         function randomNum(min, max) {
             min = Math.ceil(min);
@@ -248,9 +230,9 @@
         function createGoods(oneGoods) {
             const goods = document.createElement('div');
             goods.classList.add('goods');
-            goods.style.backgroundImage = `url(imgs/${oneGoods.BGI}.png)`;
-            goods.setAttribute('mark', oneGoods.mark)
-            goods.style.top = randomNum(255, window.innerHeight - 355) + 'px';
+            goods.style.backgroundImage = `url(imgs/${oneGoods}.png)`;
+            goods.setAttribute('mark', oneGoods)
+            goods.style.top = randomNum(222, window.innerHeight - 333) + 'px';
             goods.style.left = randomNum(20, window.innerWidth - 70) + 'px';
             body.appendChild(goods);
             goods.setAttribute('onclick', 'goodsClick(this)');
@@ -262,12 +244,14 @@
             const newGoods = self.cloneNode();
             newGoods.style.top = 0;
             newGoods.style.left = boxGoodsLeft + 'px';
+            newGoods.style.padding = 0;
             newGoods.removeAttribute('onclick');
             boxGoodsLeft += spacing;
             boxVolume++;
             newGoods.style.opacity = 0;
             box.appendChild(newGoods);
             self.style.transition = 'top .4s, left .4s';
+            self.style.padding = 0;
             self.style.top = box.offsetTop + 2 + 'px';
             self.style.left = boxGoodsLeft + box.offsetLeft - self.offsetWidth + 'px';
             setTimeout(() => {
@@ -347,7 +331,7 @@
             allGoods.forEach(item => {
                 if (!item.getAttribute('onclick')) return;
                 item.style.transition = 'top .4s, left .7s';
-                item.style.top = randomNum(255, window.innerHeight - 355) + 'px';
+                item.style.top = randomNum(222, window.innerHeight - 333) + 'px';
                 item.style.left = randomNum(20, window.innerWidth - 70) + 'px';
             });
         });
@@ -377,7 +361,8 @@
             recall.innerText = `撤回 ${recallNum}`;
             let lastChild = box.children[len - 1];
             const newGoods = lastChild.cloneNode();
-            newGoods.style.top = randomNum(255, window.innerHeight - 355) + 'px';
+            newGoods.style.padding = '22px';
+            newGoods.style.top = randomNum(222, window.innerHeight - 333) + 'px';
             newGoods.style.left = randomNum(20, window.innerWidth - 70) + 'px';
             newGoods.setAttribute('onclick', 'goodsClick(this)');
             body.appendChild(newGoods);
