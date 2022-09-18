@@ -240,6 +240,7 @@
         let disorganizeNum = 3;
         let recallNum = 3;
         let chronoscopeNum = 0;
+        let range = 350;
 
         const goodsList = [
             'zoon1', 'zoon2', 'zoon3', 'zoon4', 'zoon5', 'zoon6', 'zoon7', 'zoon8', 'zoon9',
@@ -257,6 +258,7 @@
             const equipment = document.querySelector('.equipment');
             equipment.setAttribute('href', 'css/mobile.css');
             spacing = 48;
+            range = 0;
         }
 
         function createGoods(oneGoods) {
@@ -265,7 +267,7 @@
             goods.style.backgroundImage = `url(imgs/${oneGoods}.png)`;
             goods.setAttribute('mark', oneGoods)
             goods.style.top = randomNum(222, window.innerHeight - 333) + 'px';
-            goods.style.left = randomNum(20, window.innerWidth - 70) + 'px';
+            goods.style.left = randomNum(20 + range, window.innerWidth - 70 - range) + 'px';
             body.appendChild(goods);
             goods.setAttribute('onclick', 'goodsClick(this)');
         }
