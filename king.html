@@ -367,7 +367,8 @@
             setTimeout(() => {
                 allGoods = document.querySelectorAll('.goods');
                 if (allGoods.length <= 0) {
-                    gameFinish(`恭喜你通过了${selectLevel.innerText}\n用时${chronoscopeNum}秒`, 'audio/胜利2.mp3');
+                    const str = difficult ? '困难模式' : '';
+                    gameFinish(`恭喜你通过了${str}${selectLevel.innerText}\n用时${chronoscopeNum}秒`, 'audio/胜利2.mp3');
                     const levelRecord = JSON.parse(localStorage.getItem('king_level_record'));
                     levelRecord[selectLevel.getAttribute('index')]++;
                     localStorage.setItem('king_level_record', JSON.stringify(levelRecord));
@@ -429,7 +430,7 @@
                 if (!item.getAttribute('onclick')) return;
                 item.style.transition = 'top .4s, left .7s';
                 item.style.top = randomNum(222, window.innerHeight - 333) + 'px';
-                item.style.left = randomNum(20, window.innerWidth - 70) + 'px';
+                item.style.left = randomNum(20 + range, window.innerWidth - 70 - range) + 'px';
             });
         });
         disorganize.innerText = `打乱 ${disorganizeNum}`;
@@ -445,6 +446,7 @@
             audio.addEventListener('ended', e => e.target.remove());
         }
 
+        BGAudio.volume = 0.8;
         audio.addEventListener('click', () => {
             if (BGAudio.getAttribute('src')) BGAudio.setAttribute('src', '');
             else BGAudio.setAttribute('src', 'king/BGM2.mp3');
@@ -460,7 +462,7 @@
             const newGoods = lastChild.cloneNode();
             newGoods.style.padding = '23px';
             newGoods.style.top = randomNum(222, window.innerHeight - 333) + 'px';
-            newGoods.style.left = randomNum(20, window.innerWidth - 70) + 'px';
+            newGoods.style.left = randomNum(20 + range, window.innerWidth - 70 - range) + 'px';
             newGoods.setAttribute('onclick', 'goodsClick(this)');
             body.appendChild(newGoods);
             boxGoodsLeft -= spacing;
