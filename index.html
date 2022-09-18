@@ -67,7 +67,7 @@
         .operate button {
             width: 70px;
             height: 40px;
-            background-color: #ffffff; 
+            background-color: #ffffff;
             border-radius: 3px;
             font-size: 14px;
             color: #1687ff;
@@ -105,6 +105,7 @@
             justify-content: center;
             align-items: center;
             flex-direction: column;
+            user-select: none;
         }
 
         .levelBox>div button {
@@ -151,6 +152,17 @@
         button:focus {
             outline: none;
         }
+
+        button {
+            border: none;
+        }
+
+        .fullScreen {
+            background-color: transparent;
+            position: fixed;
+            top: 110px;
+            right: 20px;
+        }
     </style>
 </head>
 
@@ -172,6 +184,23 @@
     <div class="surplus"></div>
     <div class="chronoscope">0</div>
     <button class="updataPage" onclick="javascript:location.reload();">更新</button>
+    <button class="fullScreen">
+        <?xml version="1.0" encoding="UTF-8"?>
+        <svg width="25" height="25" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="6" y="6" width="36" height="36" rx="3" fill="none" stroke="#ffffff" stroke-width="4" />
+            <path
+                d="M35 12H30.4142C29.5233 12 29.0771 13.0771 29.7071 13.7071L34.2929 18.2929C34.9229 18.9229 36 18.4767 36 17.5858V13C36 12.4477 35.5523 12 35 12Z"
+                fill="#ffffff" />
+            <path
+                d="M12 13V17.5858C12 18.4767 13.0771 18.9229 13.7071 18.2929L18.2929 13.7071C18.9229 13.0771 18.4767 12 17.5858 12H13C12.4477 12 12 12.4477 12 13Z"
+                fill="#ffffff" />
+            <path
+                d="M13 36H17.5858C18.4767 36 18.9229 34.9229 18.2929 34.2929L13.7071 29.7071C13.0771 29.0771 12 29.5233 12 30.4142V35C12 35.5523 12.4477 36 13 36Z"
+                fill="#ffffff" />
+            <path
+                d="M36 35V30.4142C36 29.5233 34.9229 29.0771 34.2929 29.7071L29.7071 34.2929C29.0771 34.9229 29.5233 36 30.4142 36H35C35.5523 36 36 35.5523 36 35Z"
+                fill="#ffffff" /></svg>
+    </button>
 
     <div class="operate">
         <button class="disorganize btn">打乱</button>
@@ -201,6 +230,7 @@
     <audio autoplay loop class="BGAudio"></audio>
 
     <script>
+        const html = document.documentElement;
         const body = document.body;
         const box = document.querySelector('.box');
         let allGoods = document.querySelectorAll('.goods');
@@ -215,6 +245,7 @@
         const levelBoxDiv = document.querySelector('.levelBox>div');
         const levelBoxBtn = document.querySelectorAll('.levelBox>div button');
         const chronoscope = document.querySelector('.chronoscope');
+        const fullScreen = document.querySelector('.fullScreen');
         let boxGoodsLeft = 0;
         let boxVolume = 0;
         let spacing = 65;
@@ -411,12 +442,38 @@
 
         gameStart(selectLevel.getAttribute('level'));
 
-        // outhangs
+        let fullScreenNum = 0;
+        fullScreen.addEventListener('click', () => {
+            if(fullScreenNum % 2 == 0) {
+                if (html.requestFullscreen) {
+                    html.requestFullscreen();
+                } else if (html.mozRequestFullScreen) {
+                    html.mozRequestFullScreen();
+                } else if (html.msRequestFullscreen) {
+                    html.msRequestFullscreen();
+                } else if (html.webkitRequestFullscreen) {
+                    html.webkitRequestFullScreen();
+                }
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.msExitFullscreen) {
+                    document.msExitFullscreen();
+                } else if (document.mozCancelFullScreen) {
+                    document.mozCancelFullScreen();
+                } else if (document.webkitExitFullscreen) {
+                    document.webkitExitFullscreen();
+                }
+            }
+            fullScreenNum++;
+        });
+
+        // cheating
         let pressTime = 0;
         levelBoxDiv.addEventListener('touchstart', () => pressTime = +new Date());
         levelBoxDiv.addEventListener('touchend', () => {
             pressTime = +new Date() - pressTime;
-            if(pressTime > 3000) disorganizeNum = 9;
+            if (pressTime > 3000) disorganizeNum = 9;
         });
     </script>
 </body>
