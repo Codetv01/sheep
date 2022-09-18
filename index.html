@@ -158,8 +158,8 @@
         }
 
         .goods {
-            padding: 22px;
-            filter: brightness(90%);
+            padding: 23px;
+            filter: grayscale(6%);
         }
 
         .hrefSheep {
@@ -394,7 +394,7 @@
             recall.innerText = `撤回 ${recallNum}`;
             let lastChild = box.children[len - 1];
             const newGoods = lastChild.cloneNode();
-            newGoods.style.padding = '22px';
+            newGoods.style.padding = '23px';
             newGoods.style.top = randomNum(222, window.innerHeight - 333) + 'px';
             newGoods.style.left = randomNum(20, window.innerWidth - 70) + 'px';
             newGoods.setAttribute('onclick', 'goodsClick(this)');
