@@ -123,6 +123,16 @@
         .chronoscope::after {
             content: ' s';
         }
+
+        .updataPage {
+            width: 20px;
+            color: #ff7700;
+            font-size: 14px;
+            position: fixed;
+            top: 70px;
+            left: 24px;
+            border: 1px solid #ff7700;
+        }
     </style>
 </head>
 
@@ -143,6 +153,7 @@
     </button>
     <div class="surplus"></div>
     <div class="chronoscope">0</div>
+    <button class="updataPage" onclick="javascript:location.reload();">更新</button>
 
     <div class="operate">
         <button class="disorganize btn">打乱</button>
@@ -290,12 +301,12 @@
             boxVolume >= 7 && gameFinish('很遗憾你输了', 'audio/失败.mp3');
             setTimeout(() => {
                 allGoods = document.querySelectorAll('.goods');
-                if(allGoods.length <= 0) {
+                if (allGoods.length <= 0) {
                     gameFinish(`恭喜你通过了${selectLevel.innerText}\n用时${chronoscopeNum}秒`, 'audio/胜利2.mp3');
                     const levelRecord = JSON.parse(localStorage.getItem('sheep_level_record'));
                     levelRecord[selectLevel.getAttribute('index')]++;
                     localStorage.setItem('sheep_level_record', JSON.stringify(levelRecord));
-                } 
+                }
             }, 450);
         }
 
@@ -354,7 +365,7 @@
         }
 
         audio.addEventListener('click', () => {
-            if(BGAudio.getAttribute('src')) BGAudio.setAttribute('src', '');
+            if (BGAudio.getAttribute('src')) BGAudio.setAttribute('src', '');
             else BGAudio.setAttribute('src', 'audio/BGM1.mp3');
             BGAudio.play();
         });
@@ -396,19 +407,12 @@
 
         const levelRecord = new Array(levelBoxBtn.length);
         for (let i = 0; i < levelRecord.length; i++) levelRecord[i] = 0;
-        localStorage.getItem('sheep_level_record') || localStorage.setItem('sheep_level_record', JSON.stringify(levelRecord));
+        localStorage.getItem('sheep_level_record') || localStorage.setItem('sheep_level_record', JSON.stringify(
+            levelRecord));
 
         setInterval(() => chronoscope.innerText = ++chronoscopeNum, 1000);
 
         gameStart(selectLevel.getAttribute('level'));
-
-        // 作弊
-        // let pressTime = 0;
-        // surplus.addEventListener('touchstart', () => pressTime = +new Date());
-        // surplus.addEventListener('touchend', () => {
-        //     pressTime = +new Date() - pressTime;
-        //     if(pressTime > 2000) disorganizeNum = 9;
-        // });
 
     </script>
 </body>
