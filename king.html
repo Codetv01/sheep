@@ -368,10 +368,11 @@
                 allGoods = document.querySelectorAll('.goods');
                 if (allGoods.length <= 0) {
                     const str = difficult ? '困难模式' : '';
+                    const levelRecord = difficult ? 'king_difficult_level_record' : 'king_level_record';
                     gameFinish(`恭喜你通过了${str}${selectLevel.innerText}\n用时${chronoscopeNum}秒`, 'audio/胜利2.mp3');
-                    const levelRecord = JSON.parse(localStorage.getItem('king_level_record'));
-                    levelRecord[selectLevel.getAttribute('index')]++;
-                    localStorage.setItem('king_level_record', JSON.stringify(levelRecord));
+                    const levelRecordArr = JSON.parse(localStorage.getItem(levelRecord));
+                    levelRecordArr[selectLevel.getAttribute('index')]++;
+                    localStorage.setItem(levelRecord, JSON.stringify(levelRecordArr));
                 }
             }, 450);
         }
@@ -473,7 +474,8 @@
 
         selectLevel.addEventListener('click', () => {
             levelBox.style.display = 'block';
-            const levelRecord = JSON.parse(localStorage.getItem('king_level_record'));
+            let levelRecord = difficult ? 'king_difficult_level_record' : 'king_level_record';
+            levelRecord = JSON.parse(localStorage.getItem(levelRecord));
             levelRecord.forEach((item, index) => item && levelBoxBtn[index].classList.add('win'));
         });
 
@@ -491,8 +493,8 @@
 
         const levelRecord = new Array(levelBoxBtn.length);
         for (let i = 0; i < levelRecord.length; i++) levelRecord[i] = 0;
-        localStorage.getItem('king_level_record') || localStorage.setItem('king_level_record', JSON.stringify(
-            levelRecord));
+        localStorage.getItem('king_level_record') || localStorage.setItem('king_level_record', JSON.stringify(levelRecord));
+        localStorage.getItem('king_difficult_level_record') || localStorage.setItem('king_difficult_level_record', JSON.stringify(levelRecord));
 
         setInterval(() => chronoscope.innerText = ++chronoscopeNum, 1000);
 
