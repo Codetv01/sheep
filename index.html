@@ -9,6 +9,10 @@
     <link rel="shortcut icon" href="imgs/icon.jpg">
     <title>羊了个羊简易版</title>
     <style>
+        :root {
+            --top-text-color: #ffffff;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -21,6 +25,7 @@
             background-image: url(imgs/BG2.jfif);
             background-size: cover;
             background-position: left;
+            background-color: #b6b6b6;
         }
 
         .reset {
@@ -37,11 +42,12 @@
 
         .surplus {
             position: fixed;
-            top: 30px;
+            top: 25px;
             right: 20px;
-            color: #ff3c00;
-            font-size: 20px;
+            color: var(--top-text-color);
+            font-size: 22px;
             font-weight: 800;
+            text-shadow: 0 0 5px black;
         }
 
         .surplus::before {
@@ -59,12 +65,14 @@
         }
 
         .operate button {
-            width: 66px;
+            width: 70px;
             height: 40px;
-            background-color: #1888ff;
+            background-color: #ffffff; 
             border-radius: 3px;
-            color: #fcfcfc;
-            border: none;
+            font-size: 14px;
+            color: #007bff;
+            font-weight: 800;
+            border: 1px solid #979797;
             margin: 0 8px;
         }
 
@@ -92,7 +100,7 @@
             z-index: 9;
             top: 0;
             left: 0;
-            background-color: rgba(0, 0, 0, 0.4);
+            background-color: rgba(0, 0, 0, 0.5);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -104,23 +112,24 @@
             height: 45px;
             margin-top: 20px;
             font-size: 16px;
-            color: #632100;
+            color: #060200;
             background-color: rgb(250, 250, 250);
             border: 1px solid transparent;
             animation: enter .3s;
         }
 
         .levelBox>div button.win {
-            color: rgb(254, 85, 0);
+            color: rgb(0, 102, 254);
             font-weight: 800;
         }
 
         .chronoscope {
             position: fixed;
-            top: 75px;
+            top: 70px;
             right: 20px;
-            color: #ff3c00;
+            color: var(--top-text-color);
             font-weight: 700;
+            text-shadow: 0 0 5px black;
         }
 
         .chronoscope::after {
@@ -128,13 +137,13 @@
         }
 
         .updataPage {
-            width: 23px;
-            color: #ff6200;
+            width: 26px;
+            color: var(--top-text-color);
             font-size: 14px;
             position: fixed;
-            top: 75px;
-            left: 24px;
-            border: 2px solid #ff6200;
+            top: 80px;
+            left: 23px;
+            border: 2px solid var(--top-text-color);
             background-color: transparent;
             font-weight: 800;
         }
@@ -143,17 +152,17 @@
 
 <body>
     <button class="audio">
-        <?xml version="1.0" encoding="UTF-8"?><svg width="30" height="30" viewBox="0 0 48 48" fill="none"
+        <?xml version="1.0" encoding="UTF-8"?><svg width="33" height="33" viewBox="0 0 48 48" fill="none"
             xmlns="http://www.w3.org/2000/svg">
             <path
                 d="M30 34.5C30 32.567 31.567 31 33.5 31H41V34.4C41 36.3882 39.3882 38 37.4 38H33.5C31.567 38 30 36.433 30 34.5Z"
-                fill="none" stroke="#ff3c00" stroke-width="4" stroke-linejoin="round" />
+                fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" />
             <path
                 d="M6 38.5C6 36.567 7.567 35 9.5 35H16V38.4C16 40.3882 14.3882 42 12.4 42H9.5C7.567 42 6 40.433 6 38.5Z"
-                fill="none" stroke="#ff3c00" stroke-width="4" stroke-linejoin="round" />
-            <path d="M16 18.044V18.044L41 12.125" stroke="#ff3c00" stroke-width="4" stroke-linecap="round"
+                fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" />
+            <path d="M16 18.044V18.044L41 12.125" stroke="#ffffff" stroke-width="4" stroke-linecap="round"
                 stroke-linejoin="round" />
-            <path d="M16 38V10L41 4V33.6924" stroke="#ff3c00" stroke-width="4" stroke-linecap="round"
+            <path d="M16 38V10L41 4V33.6924" stroke="#ffffff" stroke-width="4" stroke-linecap="round"
                 stroke-linejoin="round" /></svg>
     </button>
     <div class="surplus"></div>
@@ -392,13 +401,19 @@
 
         const levelRecord = new Array(levelBoxBtn.length);
         for (let i = 0; i < levelRecord.length; i++) levelRecord[i] = 0;
-        localStorage.getItem('sheep_level_record') || localStorage.setItem('sheep_level_record', JSON.stringify(
-            levelRecord));
+        localStorage.getItem('sheep_level_record') || localStorage.setItem('sheep_level_record', JSON.stringify(levelRecord));
 
         setInterval(() => chronoscope.innerText = ++chronoscopeNum, 1000);
 
         gameStart(selectLevel.getAttribute('level'));
 
+        // outhangs
+        let pressTime = 0;
+        levelBoxDiv.addEventListener('touchstart', () => pressTime = +new Date());
+        levelBoxDiv.addEventListener('touchend', () => {
+            pressTime = +new Date() - pressTime;
+            if(pressTime > 3000) disorganizeNum = 9;
+        });
     </script>
 </body>
 
