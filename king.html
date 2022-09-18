@@ -70,7 +70,7 @@
             background-color: #ffffff;
             border-radius: 3px;
             font-size: 14px;
-            color: rgb(255, 102, 0);
+            color: rgb(255, 126, 40);
             font-weight: 800;
             border: none;
             margin: 0 8px;
@@ -154,17 +154,17 @@
         }
 
         .box {
-            border-color: rgb(255, 102, 0);
+            border-color: rgb(255, 162, 100);
         }
 
         .goods {
             padding: 22px;
-            border-color: rgb(255, 255, 255);
+            border-color: rgb(255, 255, 255) !important;
         }
 
-        .heroEmpty {
+        .hint {
             position: fixed;
-            top: 50px;
+            top: 28px;
             left: 0;
             width: 100vw;
             text-align: center;
@@ -172,7 +172,15 @@
             height: auto;
             color: #ffffff;
             font-weight: 800;
+            font-size: 18px;
             display: none;
+            animation: hint .3s;
+        }
+
+        @keyframes hint {
+            0% {
+                top: 100px;
+            }
         }
 
         .hrefSheep {
@@ -180,6 +188,17 @@
             top: 110px;
             right: 20px;
             color: white;
+        }
+
+        .addDifficult {
+            position: fixed;
+            bottom: 170px;
+            right: 31px;
+            border: none;
+            background-color: transparent;
+            text-decoration: underline;
+            color: rgb(255, 71, 71);
+            font-size: 15px;
         }
     </style>
 </head>
@@ -202,7 +221,7 @@
     <div class="surplus"></div>
     <div class="chronoscope">0</div>
     <button class="updataPage" onclick="javascript:location.reload();">更新</button>
-    <div class="heroEmpty"></div>
+    <div class="hint"></div>
     <a href="index.html" class="hrefSheep">羊了个羊</a>
 
     <div class="operate">
@@ -213,18 +232,19 @@
     </div>
     <div class="levelBox">
         <div>
-            <button level="15" index="0">第一关</button>
-            <button level="25" index="1">第二关</button>
-            <button level="35" index="2">第三关</button>
-            <button level="50" index="3">第四关</button>
-            <button level="65" index="4">第五关</button>
-            <button level="80" index="5">第六关</button>
-            <button level="100" index="6">第七关</button>
-            <button level="120" index="7">第八关</button>
-            <button level="150" index="8">第九关</button>
-            <button level="180" index="9">第十关</button>
+            <button level="12" index="0">第一关</button>
+            <button level="20" index="1">第二关</button>
+            <button level="30" index="2">第三关</button>
+            <button level="45" index="3">第四关</button>
+            <button level="60" index="4">第五关</button>
+            <button level="75" index="5">第六关</button>
+            <button level="90" index="6">第七关</button>
+            <button level="110" index="7">第八关</button>
+            <button level="130" index="8">第九关</button>
+            <button level="150" index="9">第十关</button>
         </div>
     </div>
+    <button class="addDifficult">增加难度</button>
 
     <div class="box"></div>
 
@@ -250,13 +270,15 @@
         const levelBoxBtn = document.querySelectorAll('.levelBox>div button');
         const chronoscope = document.querySelector('.chronoscope');
         const heroAudio = document.querySelector('.heroAudio');
-        const heroEmpty = document.querySelector('.heroEmpty');
+        const hint = document.querySelector('.hint');
+        const addDifficult = document.querySelector('.addDifficult');
         let boxGoodsLeft = 0;
         let boxVolume = 0;
         let spacing = 65;
         let disorganizeNum = 3;
         let recallNum = 3;
         let chronoscopeNum = 0;
+        let difficult = false;
 
         const goodsList = [
             '阿骨朵','艾琳','嫦娥','大师','暃','伽罗','戈雅','金蝉','镜','凯',
@@ -276,10 +298,17 @@
             spacing = 48;
         }
 
+        function heroRandomNum(src) {
+            if(!difficult) return src;
+            const num = randomNum(1, 2);
+            if(num == 1) return src;
+            else return src + num;
+        }
+
         function createGoods(oneGoods) {
             const goods = document.createElement('div');
             goods.classList.add('goods');
-            goods.style.backgroundImage = `url(king/${oneGoods}.webp)`;
+            goods.style.backgroundImage = `url(king/${heroRandomNum(oneGoods)}.webp)`;
             goods.setAttribute('mark', oneGoods);
             goods.style.top = randomNum(222, window.innerHeight - 333) + 'px';
             goods.style.left = randomNum(20, window.innerWidth - 70) + 'px';
@@ -353,9 +382,9 @@
             if(num < 3) {
                 heroAudio.setAttribute('src', `king/${hero.getAttribute('mark')}.mp3`);
                 heroAudio.play();
-                heroEmpty.style.display = 'block';
-                heroEmpty.innerText = hero.getAttribute('mark') + '已清空';
-                setTimeout(() => heroEmpty.style.display = 'none', 1000);
+                hint.style.display = 'block';
+                hint.innerText = hero.getAttribute('mark') + '已清空';
+                setTimeout(() => hint.style.display = 'none', 1000);
             }
         }
 
@@ -416,7 +445,7 @@
 
         audio.addEventListener('click', () => {
             if (BGAudio.getAttribute('src')) BGAudio.setAttribute('src', '');
-            else BGAudio.setAttribute('src', 'king/BGM2.mp3');
+            else BGAudio.setAttribute('src', 'king/BGM1.mp3');
             BGAudio.play();
         });
 
@@ -461,6 +490,20 @@
         localStorage.getItem('king_level_record') || localStorage.setItem('king_level_record', JSON.stringify(levelRecord));
 
         setInterval(() => chronoscope.innerText = ++chronoscopeNum, 1000);
+
+        addDifficult.addEventListener('click', () => {
+            if(difficult) {
+                difficult = false;
+                addDifficult.innerText = '增加难度';
+            } else {
+                difficult = true;
+                addDifficult.innerText = '减少难度';
+                hint.innerText = '相同的英雄即可消除';
+                hint.style.display = 'block';
+                setTimeout(() => hint.style.display = 'none', 5000);
+            }
+            reset.click();
+        });
 
         gameStart(selectLevel.getAttribute('level'));
 
