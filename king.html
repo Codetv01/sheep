@@ -168,9 +168,9 @@
             left: 0;
             width: 100vw;
             text-align: center;
-            text-shadow: 0 0 5px black;
+            text-shadow: 0 0 3px black;
             height: auto;
-            color: #ffffff;
+            color: #ffd000;
             font-weight: 800;
             font-size: 18px;
             display: none;
@@ -192,8 +192,8 @@
 
         .addDifficult {
             position: fixed;
-            bottom: 170px;
-            right: 31px;
+            bottom: 175px;
+            right: 33px;
             border: none;
             background-color: transparent;
             text-decoration: underline;
@@ -383,7 +383,7 @@
                 heroAudio.setAttribute('src', `king/${hero.getAttribute('mark')}.mp3`);
                 heroAudio.play();
                 hint.style.display = 'block';
-                hint.innerText = hero.getAttribute('mark') + '已清空';
+                hint.innerText = hero.getAttribute('mark') + ' 已清空';
                 setTimeout(() => hint.style.display = 'none', 1500);
             }
         }
@@ -445,7 +445,7 @@
 
         audio.addEventListener('click', () => {
             if (BGAudio.getAttribute('src')) BGAudio.setAttribute('src', '');
-            else BGAudio.setAttribute('src', 'king/BGM1.mp3');
+            else BGAudio.setAttribute('src', 'king/BGM2.mp3');
             BGAudio.play();
         });
 
@@ -499,7 +499,7 @@
             } else {
                 difficult = true;
                 addDifficult.innerText = '减少难度';
-                hint.innerText = '相同的英雄即可消除';
+                hint.innerHTML = '注意英雄的皮肤<br>相同的英雄即可消除';
                 hint.style.display = 'block';
                 setTimeout(() => hint.style.display = 'none', 6000);
             }
