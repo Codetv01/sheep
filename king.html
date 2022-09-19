@@ -170,7 +170,7 @@
             text-align: center;
             text-shadow: 0 0 3px black;
             height: auto;
-            color: #ffd000;
+            color: #ffaa00;
             font-weight: 800;
             font-size: 18px;
             display: none;
@@ -476,7 +476,10 @@
             levelBox.style.display = 'block';
             let levelRecord = difficult ? 'king_difficult_level_record' : 'king_level_record';
             levelRecord = JSON.parse(localStorage.getItem(levelRecord));
-            levelRecord.forEach((item, index) => item && levelBoxBtn[index].classList.add('win'));
+            levelRecord.forEach((item, index) => {
+                levelBoxBtn[index].classList.remove('win');
+                item && levelBoxBtn[index].classList.add('win');
+            });
         });
 
         levelBoxDiv.addEventListener('click', () => levelBox.style.display = 'none');
@@ -505,7 +508,7 @@
             } else {
                 difficult = true;
                 addDifficult.innerText = '减少难度';
-                hint.innerHTML = '注意英雄的皮肤<br>相同的英雄即可消除';
+                hint.innerHTML = '即使图片不同<br>只要英雄相同即可消除';
                 hint.style.display = 'block';
                 setTimeout(() => hint.style.display = 'none', 6000);
             }
