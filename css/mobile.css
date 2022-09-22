@@ -4,9 +4,9 @@
     border: 3px solid rgb(76, 148, 255);
     background-color: rgb(255, 255, 255);
     position: fixed;
-    bottom: 35px;
+    bottom: 25px;
     left: calc((100vw - 340px) / 2);
-    border-radius: 5px ;
+    border-radius: 5px;
     box-sizing: border-box;
 }
 
