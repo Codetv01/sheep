@@ -155,6 +155,7 @@
 
         .box {
             border-color: rgb(99, 164, 255);
+            bottom: 25px;
         }
 
         .goods {
@@ -444,22 +445,22 @@
         function isIntersect(element1, element2) {
             const rect1 = element1.getBoundingClientRect();
             const rect2 = element2.getBoundingClientRect();
-            return !(rect1.right - 10 < rect2.left || rect1.left > rect2.right - 10 || rect1.bottom - 10 < rect2.top || rect1.top > rect2.bottom - 10);
+            return !(rect1.right - 5 < rect2.left || rect1.left > rect2.right - 5 || rect1.bottom - 5 < rect2.top || rect1.top > rect2.bottom - 5);
         }
 
         function coverGoods() {
             allGoods.forEach(item => item.classList.remove('grey'));
-            allGoods.forEach(item1 => {
-                allGoods.forEach(item2 => {
-                    if(isIntersect(item1, item2) && item1 != item2) {
-                        if(parseInt(item1.style.zIndex) > parseInt(item2.style.zIndex)) {
-                            item2.classList.add('grey');
+            for (let i = 0; i < allGoods.length; i++) {
+                for (let j = i + 1; j < allGoods.length; j++) {
+                    if(isIntersect(allGoods[i], allGoods[j]) && allGoods[i] != allGoods[j]) {
+                        if(parseInt(allGoods[i].style.zIndex) > parseInt(allGoods[j].style.zIndex)) {
+                            allGoods[j].classList.add('grey');
                         } else {
-                            item1.classList.add('grey');
+                            allGoods[i].classList.add('grey');
                         }
                     }
-                });
-            });
+                }
+            }
         }
 
         gameStart(selectLevel.getAttribute('level'));
