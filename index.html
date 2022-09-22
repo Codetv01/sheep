@@ -26,6 +26,7 @@
             background-size: cover;
             background-position: left;
             background-color: #b6b6b6;
+            user-select: none;
         }
 
         .reset {
@@ -34,7 +35,7 @@
 
         .audio {
             position: fixed;
-            top: 30px;
+            top: 20px;
             left: 20px;
             background-color: transparent;
             border: none;
@@ -42,7 +43,7 @@
 
         .surplus {
             position: fixed;
-            top: 25px;
+            top: 15px;
             right: 20px;
             color: var(--top-text-color);
             font-size: 22px;
@@ -58,7 +59,7 @@
         .operate {
             width: 100vw;
             position: fixed;
-            bottom: 120px;
+            bottom: 100px;
             left: 0;
             display: flex;
             justify-content: center;
@@ -97,7 +98,7 @@
             width: 100vw;
             height: 100vh;
             position: fixed;
-            z-index: 9;
+            z-index: 999;
             top: 0;
             left: 0;
             background-color: rgba(0, 0, 0, 0.5);
@@ -105,7 +106,6 @@
             justify-content: center;
             align-items: center;
             flex-direction: column;
-            user-select: none;
         }
 
         .levelBox>div button {
@@ -126,7 +126,7 @@
 
         .chronoscope {
             position: fixed;
-            top: 70px;
+            top: 60px;
             right: 20px;
             color: var(--top-text-color);
             font-weight: 700;
@@ -142,7 +142,7 @@
             color: var(--top-text-color);
             font-size: 14px;
             position: fixed;
-            top: 80px;
+            top: 70px;
             left: 23px;
             border: 2px solid var(--top-text-color);
             background-color: transparent;
@@ -162,9 +162,13 @@
             filter: grayscale(6%);
         }
 
+        .goods.grey {
+            filter: grayscale(100%);
+        }
+
         .hrefSheep {
             position: fixed;
-            top: 110px;
+            top: 100px;
             right: 20px;
             color: white;
         }
@@ -194,21 +198,21 @@
     <div class="operate">
         <button class="disorganize btn">打乱</button>
         <button class="recall btn">撤回</button>
-        <button class="selectLevel btn" level="6" index="0">第一关</button>
+        <button class="selectLevel btn" level="5" index="0">第一关</button>
         <button class="reset btn">重新开始</button>
     </div>
     <div class="levelBox">
         <div>
-            <button level="6" index="0">第一关</button>
-            <button level="10" index="1">第二关</button>
-            <button level="15" index="2">第三关</button>
-            <button level="22" index="3">第四关</button>
-            <button level="30" index="4">第五关</button>
-            <button level="40" index="5">第六关</button>
-            <button level="50" index="6">第七关</button>
-            <button level="70" index="7">第八关</button>
-            <button level="95" index="8">第九关</button>
-            <button level="120" index="9">第十关</button>
+            <button level="5" index="0">第一关</button>
+            <button level="8" index="1">第二关</button>
+            <button level="12" index="2">第三关</button>
+            <button level="17" index="3">第四关</button>
+            <button level="23" index="4">第五关</button>
+            <button level="30" index="5">第六关</button>
+            <button level="38" index="6">第七关</button>
+            <button level="47" index="7">第八关</button>
+            <button level="57" index="8">第九关</button>
+            <button level="68" index="9">第十关</button>
         </div>
     </div>
 
@@ -243,9 +247,9 @@
         let range = 350;
 
         const goodsList = [
-            'zoon1', 'zoon2', 'zoon3', 'zoon4', 'zoon5', 'zoon6', 'zoon7', 'zoon8', 'zoon9',
-            'fruit1', 'fruit2', 'fruit3', 'fruit4', 'fruit5', 'fruit6', 'fruit7', 'fruit8', 'fruit9',
-            'cake1', 'cake2', 'cake3', 'cake4', 'cake5', 'cake6', 'cake7', 'cake8', 'cake9'
+            'zoon1', 'zoon2', 'zoon3', 'zoon4', 'zoon5', 'zoon6', 'zoon7', 'zoon8',
+            'fruit1', 'fruit2', 'fruit3', 'fruit4', 'fruit5', 'fruit6', 'fruit7', 'fruit8',
+            'cake1', 'cake2', 'cake3', 'cake4', 'cake5', 'cake6', 'cake7', 'cake8',
         ]
 
         function randomNum(min, max) {
@@ -266,14 +270,14 @@
             goods.classList.add('goods');
             goods.style.backgroundImage = `url(imgs/${oneGoods}.png)`;
             goods.setAttribute('mark', oneGoods)
-            goods.style.top = randomNum(222, window.innerHeight - 333) + 'px';
+            goods.style.top = randomNum(155, window.innerHeight - 222) + 'px';
             goods.style.left = randomNum(20 + range, window.innerWidth - 70 - range) + 'px';
             body.appendChild(goods);
             goods.setAttribute('onclick', 'goodsClick(this)');
         }
 
         function goodsClick(self) {
-            if (boxVolume >= 7) return;
+            if (boxVolume >= 7 || self.classList.contains('grey')) return;
             createdAudio('audio/点击.mp3');
             const newGoods = self.cloneNode();
             newGoods.style.top = 0;
@@ -284,14 +288,15 @@
             boxVolume++;
             newGoods.style.opacity = 0;
             box.appendChild(newGoods);
-            self.style.transition = 'top .4s, left .4s';
+            self.style.transition = 'top .2s, left .2s';
             self.style.padding = 0;
             self.style.top = box.offsetTop + 2 + 'px';
             self.style.left = boxGoodsLeft + box.offsetLeft - self.offsetWidth + 'px';
             setTimeout(() => {
                 newGoods.style.opacity = 1;
                 self.remove();
-            }, 400);
+                coverGoods();
+            }, 100);
             let count = 0;
             let children = [...box.children];
             children.forEach(item => item.getAttribute('mark') == newGoods.getAttribute('mark') && count++);
@@ -325,7 +330,7 @@
                     levelRecord[selectLevel.getAttribute('index')]++;
                     localStorage.setItem('sheep_level_record', JSON.stringify(levelRecord));
                 }
-            }, 450);
+            }, 300);
         }
 
         function gameFinish(str, audio) {
@@ -355,8 +360,12 @@
                 for (let i = 0; i < 3; i++) createGoods(goodsList[num]);
             }
             allGoods = document.querySelectorAll('.goods');
-            allGoods.forEach(item => item.style.animation = `enter .3s`);
+            allGoods.forEach((item, index) => {
+                item.style.animation = `enter .3s`;
+                item.style.zIndex = index + 1;
+            });
             surplus.innerText = allGoods.length;
+            setTimeout(coverGoods, 300);
         }
 
         disorganize.addEventListener('click', () => {
@@ -365,10 +374,11 @@
             disorganize.innerText = `打乱 ${disorganizeNum}`;
             allGoods.forEach(item => {
                 if (!item.getAttribute('onclick')) return;
-                item.style.transition = 'top .4s, left .7s';
-                item.style.top = randomNum(222, window.innerHeight - 333) + 'px';
+                item.style.transition = 'top .25s, left .25s';
+                item.style.top = randomNum(155, window.innerHeight - 222) + 'px';
                 item.style.left = randomNum(20 + range, window.innerWidth - 70 - range) + 'px';
             });
+            setTimeout(coverGoods, 300);
         });
         disorganize.innerText = `打乱 ${disorganizeNum}`;
 
@@ -397,7 +407,7 @@
             let lastChild = box.children[len - 1];
             const newGoods = lastChild.cloneNode();
             newGoods.style.padding = '23px';
-            newGoods.style.top = randomNum(222, window.innerHeight - 333) + 'px';
+            newGoods.style.top = randomNum(155, window.innerHeight - 222) + 'px';
             newGoods.style.left = randomNum(20 + range, window.innerWidth - 70 - range) + 'px';
             newGoods.setAttribute('onclick', 'goodsClick(this)');
             body.appendChild(newGoods);
@@ -430,6 +440,27 @@
         localStorage.getItem('sheep_level_record') || localStorage.setItem('sheep_level_record', JSON.stringify(levelRecord));
 
         setInterval(() => chronoscope.innerText = ++chronoscopeNum, 1000);
+
+        function isIntersect(element1, element2) {
+            const rect1 = element1.getBoundingClientRect();
+            const rect2 = element2.getBoundingClientRect();
+            return !(rect1.right - 10 < rect2.left || rect1.left > rect2.right - 10 || rect1.bottom - 10 < rect2.top || rect1.top > rect2.bottom - 10);
+        }
+
+        function coverGoods() {
+            allGoods.forEach(item => item.classList.remove('grey'));
+            allGoods.forEach(item1 => {
+                allGoods.forEach(item2 => {
+                    if(isIntersect(item1, item2) && item1 != item2) {
+                        if(parseInt(item1.style.zIndex) > parseInt(item2.style.zIndex)) {
+                            item2.classList.add('grey');
+                        } else {
+                            item1.classList.add('grey');
+                        }
+                    }
+                });
+            });
+        }
 
         gameStart(selectLevel.getAttribute('level'));
 
