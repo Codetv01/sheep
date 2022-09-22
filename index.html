@@ -33,7 +33,7 @@
             width: 75px;
         }
 
-        .audio {
+        .controlBGM {
             position: fixed;
             top: 20px;
             left: 20px;
@@ -66,7 +66,7 @@
         }
 
         .operate button {
-            width: 70px;
+            width: 55px;
             height: 40px;
             background-color: #ffffff;
             border-radius: 3px;
@@ -177,30 +177,18 @@
 </head>
 
 <body>
-    <button class="audio">
-        <?xml version="1.0" encoding="UTF-8"?><svg width="33" height="33" viewBox="0 0 48 48" fill="none"
-            xmlns="http://www.w3.org/2000/svg">
-            <path
-                d="M30 34.5C30 32.567 31.567 31 33.5 31H41V34.4C41 36.3882 39.3882 38 37.4 38H33.5C31.567 38 30 36.433 30 34.5Z"
-                fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" />
-            <path
-                d="M6 38.5C6 36.567 7.567 35 9.5 35H16V38.4C16 40.3882 14.3882 42 12.4 42H9.5C7.567 42 6 40.433 6 38.5Z"
-                fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" />
-            <path d="M16 18.044V18.044L41 12.125" stroke="#ffffff" stroke-width="4" stroke-linecap="round"
-                stroke-linejoin="round" />
-            <path d="M16 38V10L41 4V33.6924" stroke="#ffffff" stroke-width="4" stroke-linecap="round"
-                stroke-linejoin="round" /></svg>
-    </button>
+    <button class="controlBGM"></button>
     <div class="surplus"></div>
     <div class="chronoscope">0</div>
     <button class="updataPage" onclick="javascript:location.reload();">更新</button>
     <a href="king.html" class="hrefSheep">王了个王</a>
 
     <div class="operate">
-        <button class="disorganize btn">打乱</button>
-        <button class="recall btn">撤回</button>
-        <button class="selectLevel btn" level="5" index="0">第一关</button>
-        <button class="reset btn">重新开始</button>
+        <button class="disorganize">洗牌</button>
+        <button class="recall">撤回</button>
+        <button class="lightUp">点亮</button>
+        <button class="selectLevel" level="5" index="0">第一关</button>
+        <button class="reset">重置</button>
     </div>
     <div class="levelBox">
         <div>
@@ -232,13 +220,14 @@
         const disorganize = document.querySelector('.disorganize');
         const reset = document.querySelector('.reset');
         const BGAudio = document.querySelector('.BGAudio');
-        const audio = document.querySelector('.audio');
+        const controlBGM = document.querySelector('.controlBGM');
         const recall = document.querySelector('.recall');
         const surplus = document.querySelector('.surplus');
         const levelBox = document.querySelector('.levelBox');
         const levelBoxDiv = document.querySelector('.levelBox>div');
         const levelBoxBtn = document.querySelectorAll('.levelBox>div button');
         const chronoscope = document.querySelector('.chronoscope');
+        const lightUp = document.querySelector('.lightUp');
         let boxGoodsLeft = 0;
         let boxVolume = 0;
         let spacing = 65;
@@ -246,6 +235,9 @@
         let recallNum = 3;
         let chronoscopeNum = 0;
         let range = 350;
+        let lightUpNum = 3;
+        const mutedSVG = '<?xml version="1.0" encoding="UTF-8"?><svg width="33" height="33" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><rect opacity="0.01" x="30" y="18" width="13" height="13" fill="#ffffff"/><mask id="icon-1441a00e6a0e536" maskUnits="userSpaceOnUse" x="30" y="18" width="13" height="13" style="mask-type: alpha"><rect x="30" y="18" width="13" height="13" fill="#ffffff"/></mask><g mask="url(#icon-1441a00e6a0e536)"><path d="M40.7348 20.2858L32.2495 28.7711" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M32.2496 20.2858L40.7349 28.7711" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></g><path d="M24 6V42C17 42 11.7985 32.8391 11.7985 32.8391H6C4.89543 32.8391 4 31.9437 4 30.8391V17.0108C4 15.9062 4.89543 15.0108 6 15.0108H11.7985C11.7985 15.0108 17 6 24 6Z" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round"/></svg>',
+              notMutedSVG = '<?xml version="1.0" encoding="UTF-8"?><svg width="33" height="33" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M24 6V42C17 42 11.7985 32.8391 11.7985 32.8391H6C4.89543 32.8391 4 31.9437 4 30.8391V17.0108C4 15.9062 4.89543 15.0108 6 15.0108H11.7985C11.7985 15.0108 17 6 24 6Z" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round"/><path d="M32 15L32 15C32.6232 15.5565 33.1881 16.1797 33.6841 16.8588C35.1387 18.8504 36 21.3223 36 24C36 26.6545 35.1535 29.1067 33.7218 31.0893C33.2168 31.7885 32.6391 32.4293 32 33" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M34.2359 41.1857C40.0836 37.6953 44 31.305 44 24C44 16.8085 40.2043 10.5035 34.507 6.97906" stroke="#ffffff" stroke-width="4" stroke-linecap="round"/></svg>';
 
         const goodsList = [
             'zoon1', 'zoon2', 'zoon3', 'zoon4', 'zoon5', 'zoon6', 'zoon7', 'zoon8',
@@ -343,6 +335,7 @@
             createdAudio(audio);
             disorganizeNum = 0;
             recallNum = 0;
+            lightUpNum = 0;
         }
 
         function gameStart(number) {
@@ -351,9 +344,11 @@
             allGoods = document.querySelectorAll('.goods');
             allGoods.forEach(item => item.remove());
             disorganizeNum = 3;
-            disorganize.innerText = `打乱 ${disorganizeNum}`;
+            disorganize.innerText = `洗牌 ${disorganizeNum}`;
             recallNum = 3;
             recall.innerText = `撤回 ${recallNum}`;
+            lightUpNum = 3;
+            lightUp.innerText = `点亮 ${lightUpNum}`;
             chronoscopeNum = 0;
             chronoscope.innerText = chronoscopeNum;
             for (let i = 0; i < number; i++) {
@@ -372,7 +367,7 @@
         disorganize.addEventListener('click', () => {
             if (disorganizeNum <= 0) return;
             disorganizeNum--;
-            disorganize.innerText = `打乱 ${disorganizeNum}`;
+            disorganize.innerText = `洗牌 ${disorganizeNum}`;
             allGoods.forEach(item => {
                 if (!item.getAttribute('onclick')) return;
                 item.style.transition = 'top .25s, left .25s';
@@ -381,7 +376,7 @@
             });
             setTimeout(coverGoods, 300);
         });
-        disorganize.innerText = `打乱 ${disorganizeNum}`;
+        disorganize.innerText = `洗牌 ${disorganizeNum}`;
 
         reset.addEventListener('click', () => gameStart(selectLevel.getAttribute('level')));
 
@@ -394,11 +389,17 @@
             audio.addEventListener('ended', e => e.target.remove());
         }
 
-        audio.addEventListener('click', () => {
-            if (BGAudio.getAttribute('src')) BGAudio.setAttribute('src', '');
-            else BGAudio.setAttribute('src', 'audio/BGM1.mp3');
+        controlBGM.addEventListener('click', () => {
+            if (BGAudio.getAttribute('src')) {
+                BGAudio.setAttribute('src', '');
+                controlBGM.innerHTML = mutedSVG;
+            } else {
+                BGAudio.setAttribute('src', 'audio/BGM1.mp3');
+                controlBGM.innerHTML = notMutedSVG;
+            }
             BGAudio.play();
         });
+        controlBGM.innerHTML = mutedSVG;
 
         recall.addEventListener('click', () => {
             let len = box.children.length;
@@ -462,6 +463,15 @@
                 }
             }
         }
+
+        lightUp.addEventListener('click', () => {
+            if (lightUpNum <= 0) return;
+            allGoods.forEach(item => item.classList.remove('grey'));
+            lightUpNum--;
+            lightUp.innerText = `点亮 ${lightUpNum}`;
+        });
+
+        lightUp.innerText = `点亮 ${lightUpNum}`;
 
         gameStart(selectLevel.getAttribute('level'));
 
