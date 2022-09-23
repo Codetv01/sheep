@@ -280,7 +280,7 @@
 
 
         const goodsList = [
-            '艾琳', '嫦娥', '大师', '伽罗', '金蝉', '镜', '凯', '司马懿',
+            '艾琳', '嫦娥', '大师', '伽罗', '金蝉', '镜', '凯', '司马懿', '暃',
             '澜', '李信', '马超', '蒙恬', '蒙犽', '盘古', '沈梦溪', '猪八戒',
             '孙策', '婉儿', '西施', '夏洛特', '瑶', '曜', '元歌', '云樱', '云中君'
         ]
@@ -436,7 +436,7 @@
         disorganize.addEventListener('click', () => {
             if (disorganizeNum <= 0) return;
             disorganizeNum--;
-            disorganize.innerText = `打乱 ${disorganizeNum}`;
+            disorganize.innerText = `洗牌 ${disorganizeNum}`;
             allGoods.forEach(item => {
                 if (!item.getAttribute('onclick')) return;
                 item.style.transition = 'top .25s, left .25s';
@@ -445,7 +445,7 @@
             });
             setTimeout(coverGoods, 300);
         });
-        disorganize.innerText = `打乱 ${disorganizeNum}`;
+        disorganize.innerText = `洗牌 ${disorganizeNum}`;
 
         reset.addEventListener('click', () => gameStart(selectLevel.getAttribute('level')));
 
@@ -466,8 +466,8 @@
             } else {
                 BGAudio.setAttribute('src', 'king/BGM2.mp3');
                 controlBGM.innerHTML = notMutedSVG;
+                BGAudio.play();
             }
-            BGAudio.play();
         });
         controlBGM.innerHTML = mutedSVG;
 
@@ -540,8 +540,9 @@
         }
 
         function coverGoods() {
-            allGoods.forEach(item => item.classList.remove('grey'));
             for (let i = 0; i < allGoods.length; i++) {
+                allGoods[i].classList.remove('grey');
+
                 for (let j = i + 1; j < allGoods.length; j++) {
                     if(isIntersect(allGoods[i], allGoods[j]) && allGoods[i] != allGoods[j]) {
                         if(parseInt(allGoods[i].style.zIndex) > parseInt(allGoods[j].style.zIndex)) {
