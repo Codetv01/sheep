@@ -173,6 +173,28 @@
             right: 20px;
             color: white;
         }
+
+        .hint {
+            position: fixed;
+            z-index: 99;
+            top: 28px;
+            left: 0;
+            width: 100vw;
+            text-align: center;
+            text-shadow: 0 0 3px black;
+            height: auto;
+            color: #ffaa00;
+            font-weight: 800;
+            font-size: 18px;
+            display: none;
+            animation: hint .3s;
+        }
+
+        @keyframes hint {
+            0% {
+                top: 100px;
+            }
+        }
     </style>
 </head>
 
@@ -181,6 +203,7 @@
     <div class="surplus"></div>
     <div class="chronoscope">0</div>
     <button class="updataPage" onclick="javascript:location.reload();">更新</button>
+    <div class="hint">可以点击灰色卡片哦</div>
     <a href="king.html" class="hrefSheep">王了个王</a>
 
     <div class="operate">
@@ -227,6 +250,7 @@
         const levelBoxBtn = document.querySelectorAll('.levelBox>div button');
         const chronoscope = document.querySelector('.chronoscope');
         const lightUp = document.querySelector('.lightUp');
+        const hint = document.querySelector('.hint');
         let allGoods = document.querySelectorAll('.goods');
         let boxGoodsLeft = 0;
         let boxVolume = 0;
@@ -236,6 +260,7 @@
         let chronoscopeNum = 0;
         let range = 350;
         let lightUpNum = 3;
+        let goldFinger = false;
         const mutedSVG =
             '<?xml version="1.0" encoding="UTF-8"?><svg width="33" height="33" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><rect opacity="0.01" x="30" y="18" width="13" height="13" fill="#ffffff"/><mask id="icon-1441a00e6a0e536" maskUnits="userSpaceOnUse" x="30" y="18" width="13" height="13" style="mask-type: alpha"><rect x="30" y="18" width="13" height="13" fill="#ffffff"/></mask><g mask="url(#icon-1441a00e6a0e536)"><path d="M40.7348 20.2858L32.2495 28.7711" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M32.2496 20.2858L40.7349 28.7711" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></g><path d="M24 6V42C17 42 11.7985 32.8391 11.7985 32.8391H6C4.89543 32.8391 4 31.9437 4 30.8391V17.0108C4 15.9062 4.89543 15.0108 6 15.0108H11.7985C11.7985 15.0108 17 6 24 6Z" fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round"/></svg>',
             notMutedSVG =
@@ -272,7 +297,8 @@
         }
 
         function goodsClick(self) {
-            if (boxVolume >= 7 || self.classList.contains('grey')) return;
+            if (boxVolume >= 7 || (self.classList.contains('grey') && !goldFinger)) return;
+            goldFinger = false;
             createdAudio('audio/点击.mp3');
             const newGoods = self.cloneNode();
             newGoods.style.top = 0;
@@ -282,6 +308,7 @@
             boxGoodsLeft += spacing;
             boxVolume++;
             newGoods.style.opacity = 0;
+            newGoods.classList.remove('grey');
             box.appendChild(newGoods);
             self.style.transition = 'top .2s, left .2s';
             self.style.padding = 0;
@@ -502,7 +529,9 @@
 
         lightUp.addEventListener('click', () => {
             if (lightUpNum <= 0) return;
-            allGoods.forEach(item => item.classList.remove('grey'));
+            hint.style.display = 'block';
+            goldFinger = true;
+            setTimeout(() => hint.style.display = 'none', 3000);
             lightUpNum--;
             lightUp.innerText = `魔法 ${lightUpNum}`;
         });
