@@ -332,6 +332,7 @@
             boxVolume++;
             console.log('点击：', boxVolume);
             newGoods.style.opacity = 0;
+            newGoods.classList.remove('grey');
             box.appendChild(newGoods);
             self.style.transition = 'top .2s, left .2s';
             self.style.padding = 0;
