@@ -401,13 +401,8 @@
                 allGoods[i].classList.remove('grey');
                 for (let j = i + 1; j < allGoods.length; j++) {
                     if (isIntersect(allGoods[i], allGoods[j])) {
-                        if (parseInt(allGoods[i].style.zIndex) > parseInt(allGoods[j].style.zIndex)) {
-                            allGoods[j].classList.add('grey');
-                            allGoods[j].setAttribute('cover', allGoods[j].getAttribute('cover') + ',' + allGoods[i].getAttribute('id'));
-                        } else {
-                            allGoods[i].classList.add('grey');
-                            allGoods[i].setAttribute('cover', allGoods[i].getAttribute('cover') + ',' + allGoods[j].getAttribute('id'));
-                        }
+                        allGoods[i].classList.add('grey');
+                        allGoods[i].setAttribute('cover', allGoods[i].getAttribute('cover') + ',' + allGoods[j].getAttribute('id'));
                     }
                 }
             }
@@ -548,6 +543,7 @@
             pressTime = +new Date() - pressTime;
             if (pressTime > 3000) disorganizeNum = 9;
         });
+        
     </script>
 </body>
 
