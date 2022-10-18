@@ -16,7 +16,7 @@
     border: 3px solid rgb(195, 195, 195);
     box-sizing: border-box;
     border-radius: 5px;
-    background-size: contain;
+    background-size: cover;
     background-repeat: no-repeat;
     background-color: white;
 }
