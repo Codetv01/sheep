@@ -330,7 +330,6 @@
             newGoods.removeAttribute('onclick');
             boxGoodsLeft += spacing;
             boxVolume++;
-            console.log('点击：', boxVolume);
             newGoods.style.opacity = 0;
             newGoods.classList.remove('grey');
             box.appendChild(newGoods);
@@ -353,7 +352,6 @@
                 emptying(self);
                 surplus.innerText = allGoods.length - 3;
                 boxVolume -= 3;
-                console.log('得分：', boxVolume);
                 children.forEach(item => {
                     if (item.getAttribute('mark') == newGoods.getAttribute('mark') && deleteNum > 0) {
                         deleteNum--;
@@ -370,7 +368,6 @@
                     }
                 });
             }
-            console.log('你输了：', boxVolume);
             boxVolume >= 7 && gameFinish('很遗憾你输了', 'audio/失败.mp3');
             setTimeout(() => {
                 allGoods = document.querySelectorAll('.goods');
@@ -418,7 +415,6 @@
 
         function gameStart(number) {
             boxVolume = 0;
-            console.log('游戏开始：', boxVolume);
             boxGoodsLeft = 0;
             allGoods = document.querySelectorAll('.goods');
             allGoods.forEach(item => item.remove());
@@ -450,13 +446,8 @@
                 allGoods[i].classList.remove('grey');
                 for (let j = i + 1; j < allGoods.length; j++) {
                     if (isIntersect(allGoods[i], allGoods[j])) {
-                        if (parseInt(allGoods[i].style.zIndex) > parseInt(allGoods[j].style.zIndex)) {
-                            allGoods[j].classList.add('grey');
-                            allGoods[j].setAttribute('cover', allGoods[j].getAttribute('cover') + ',' + allGoods[i].getAttribute('id'));
-                        } else {
-                            allGoods[i].classList.add('grey');
-                            allGoods[i].setAttribute('cover', allGoods[i].getAttribute('cover') + ',' + allGoods[j].getAttribute('id'));
-                        }
+                        allGoods[i].classList.add('grey');
+                        allGoods[i].setAttribute('cover', allGoods[i].getAttribute('cover') + ',' + allGoods[j].getAttribute('id'));
                     }
                 }
             }
@@ -523,7 +514,6 @@
             body.appendChild(newGoods);
             boxGoodsLeft -= spacing;
             boxVolume--;
-            console.log('撤回：', boxVolume);
             lastChild.remove();
         });
         recall.innerText = `撤回 ${recallNum}`;
